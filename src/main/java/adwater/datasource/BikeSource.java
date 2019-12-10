@@ -4,6 +4,8 @@ import adwater.datatypes.BikeRide;
 
 import com.opencsv.CSVReader;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
+import org.apache.flink.streaming.api.watermark.Watermark;
+
 import java.io.*;
 
 public class BikeSource implements SourceFunction<BikeRide> {
@@ -19,6 +21,7 @@ public class BikeSource implements SourceFunction<BikeRide> {
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
         String [] line;
+        long currentWaterMark = 0L;
         Reader BikeData = new FileReader(filePath);
         CSVReader BikeDataReader = new CSVReader(BikeData);
         line = BikeDataReader.readNext();
@@ -27,8 +30,12 @@ public class BikeSource implements SourceFunction<BikeRide> {
         }
         while ((line = BikeDataReader.readNext()) != null && isRunning) {
             BikeRide br = new BikeRide(line[1], line[2]);
+            long ts = br.getEventTimeStamp();
+            sourceContext.collectWithTimestamp(br, ts);
+            if(ts > currentWaterMark) {
+                sourceContext.emitWatermark(new Watermark(ts));
+            }
             Thread.sleep(100);
-            sourceContext.collect(br);
         }
     }
 

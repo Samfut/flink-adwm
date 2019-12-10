@@ -64,25 +64,7 @@ public class StreamingJob {
 		env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
 		// 提取时间戳
-		DataStream<BikeRide> bikerides =  env.addSource(new BikeSource(bikeDataPath))
-                .assignTimestampsAndWatermarks(new AssignerWithPeriodicWatermarks<BikeRide>() {
-
-                    Long currentMaxTimestamp = 0L;
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-
-                    @Nullable
-                    @Override
-                    public Watermark getCurrentWatermark() {
-                        return new Watermark(currentMaxTimestamp);
-                    }
-
-                    @Override
-                    public long extractTimestamp(BikeRide bikeRide, long l) {
-                        long ts = bikeRide.getEventTimeStamp();
-                        currentMaxTimestamp = Math.max(ts, currentMaxTimestamp);
-                        return ts;
-                    }
-                });
+		DataStream<BikeRide> bikerides =  env.addSource(new BikeSource(bikeDataPath));
 
 		bikerides.keyBy(x -> x.id).window(TumblingEventTimeWindows.of(Time.minutes(1)))
                 .apply(new WindowFunction<BikeRide, String, Integer, TimeWindow>() {
