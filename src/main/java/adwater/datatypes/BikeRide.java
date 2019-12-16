@@ -1,6 +1,7 @@
 package adwater.datatypes;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,7 +16,6 @@ public class BikeRide implements Serializable {
 
     public BikeRide(String startTime, String stopTime){
         try {
-
             Date startDate = dateFormat.parse(startTime);
             Date stopDate = dateFormat.parse(stopTime);
             this.startTime = startDate;

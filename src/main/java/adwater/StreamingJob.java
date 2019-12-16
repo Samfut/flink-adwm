@@ -20,22 +20,16 @@ package adwater;
 
 import adwater.datasource.BikeSource;
 import adwater.datatypes.BikeRide;
-import com.sun.org.apache.regexp.internal.RE;
-import org.apache.flink.api.common.functions.AggregateFunction;
+import adwater.trigger.EventTimeRecordTrigger;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.AssignerWithPeriodicWatermarks;
-import org.apache.flink.streaming.api.functions.timestamps.AscendingTimestampExtractor;
-import org.apache.flink.streaming.api.functions.windowing.ProcessWindowFunction;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
-import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
-import javax.annotation.Nullable;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -56,15 +50,26 @@ public class StreamingJob {
 
 	public static void main(String[] args) throws Exception {
 		// set filePath
-		URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/201810-citibike-tripdata.csv");
+		URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201810/CB20181001.csv");
+		// "/Users/yangs/Projects/adwater/target/classes/bike/201810-citibike-tripdata.csv"
 		String bikeDataPath = bikeDataUrl.getFile();
-		System.out.println(bikeDataPath);
 		// set up the streaming execution environment
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
-		// 提取时间戳
-		DataStream<BikeRide> bikerides =  env.addSource(new BikeSource(bikeDataPath));
+		// 指定输出路径 并提取时间戳
+        // isheuristic 表示启发式水印
+        // lantency 启发式水印延迟
+        String resOutPath = "/Users/yangs/Desktop/result/201810-60.csv";
+        boolean isheuristic = true;
+        long lantency = 10000L;
+		DataStream<BikeRide> bikerides =  env.addSource(
+		        new BikeSource(
+		                bikeDataPath,
+                        resOutPath,
+                        isheuristic,
+                        lantency
+                ));
 
 		bikerides.keyBy(x -> x.id).window(TumblingEventTimeWindows.of(Time.minutes(1)))
                 .apply(new WindowFunction<BikeRide, String, Integer, TimeWindow>() {
