@@ -21,6 +21,7 @@ package adwater;
 import adwater.datasource.BikeSource;
 import adwater.datatypes.BikeRide;
 import adwater.trigger.EventTimeRecordTrigger;
+import org.apache.commons.cli.*;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -48,30 +49,58 @@ import java.util.Iterator;
  */
 public class StreamingJob {
 
-	public static void main(String[] args) throws Exception {
-		// set filePath
-		URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201810/CB20181001.csv");
-		// "/Users/yangs/Projects/adwater/target/classes/bike/201810-citibike-tripdata.csv"
-		String bikeDataPath = bikeDataUrl.getFile();
-		// set up the streaming execution environment
-		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+    public static void main(String[] args) throws Exception {
 
-		// 指定输出路径 并提取时间戳
+        Options options = new Options();
+
+        options.addOption(Option.builder("w").longOpt("wm").hasArg().argName("watermark").desc("the path of watermark result").build());
+        options.addOption(Option.builder("l").longOpt("la").hasArg().argName("latency").desc("the path of latency result").build());
+
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+        CommandLine result = null;
+
+        try {
+            result = parser.parse(options, args);
+        } catch (ParseException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+
+        String WaterMarkOutPath = "/Users/yangs/Desktop/result/water.csv";
+        String LatencyOutPath = "/Users/yangs/Desktop/result/timelatency.csv";
+
+        if (result.hasOption("w")) {
+            WaterMarkOutPath = result.getOptionValue("w");
+        }
+
+        if (result.hasOption("l")) {
+            LatencyOutPath = result.getOptionValue("l");
+        }
+
+        // set filePath
+        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201810/CB20181001.csv");
+        String bikeDataPath = bikeDataUrl.getFile();
+        // set up the streaming execution environment
+        final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+        env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
+
+        // 指定输出路径 并提取时间戳
         // isheuristic 表示启发式水印
         // lantency 启发式水印延迟
-        String resOutPath = "/Users/yangs/Desktop/result/201810-60.csv";
+        new ResWriter(LatencyOutPath);
         boolean isheuristic = true;
         long lantency = 10000L;
-		DataStream<BikeRide> bikerides =  env.addSource(
-		        new BikeSource(
-		                bikeDataPath,
-                        resOutPath,
+        DataStream<BikeRide> bikerides = env.addSource(
+                new BikeSource(
+                        bikeDataPath,
+                        WaterMarkOutPath,
                         isheuristic,
                         lantency
                 ));
 
-		bikerides.keyBy(x -> x.id).window(TumblingEventTimeWindows.of(Time.minutes(1)))
+        bikerides.keyBy(x -> x.id).window(TumblingEventTimeWindows.of(Time.minutes(1)))
+                .trigger(EventTimeRecordTrigger.create())
                 .apply(new WindowFunction<BikeRide, String, Integer, TimeWindow>() {
                     @Override
                     public void apply(Integer integer, TimeWindow timeWindow, Iterable<BikeRide> iterable, Collector<String> collector) throws Exception {
@@ -82,15 +111,16 @@ public class StreamingJob {
                             it.next();
                         }
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                        String result = sdf.format(timeWindow.getStart()) + "<->" + sdf.format(timeWindow.getEnd()) + " \n"+
+                        String result = sdf.format(timeWindow.getStart()) + "<->" + sdf.format(timeWindow.getEnd()) + " \n" +
                                 "窗口内元素个数: " + count;
                         System.out.println(result);
                         collector.collect(result);
                     }
                 });
         bikerides.print();
-		env.execute("Flink Streaming Java API Skeleton");
-	}
+        env.execute("Flink Streaming Java API Skeleton");
+        ResWriter.csvWriter.close();
+    }
 }
 
 

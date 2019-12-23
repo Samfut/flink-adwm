@@ -27,3 +27,6 @@ hs_err_pid*
 
 *.csv
 *.csv
+
+dependency-reduced-pom.xml
+target/

@@ -45,10 +45,10 @@ public class BikeSource implements SourceFunction<BikeRide> {
         Writer writer = new FileWriter(outPath);
         CSVWriter csvWriter = new CSVWriter(writer);
 
-        String [] line;
+        String[] line;
         // 先读取csv head
         line = BikeDataReader.readNext();
-        if(line == null) {
+        if (line == null) {
             return;
         }
         long currentWaterMark = 0L;
@@ -62,27 +62,24 @@ public class BikeSource implements SourceFunction<BikeRide> {
             }
             long ts = br.getEventTimeStamp();
             sourceContext.collectWithTimestamp(br, ts);
-            if(ts < currentWaterMark) {
-                System.out.println("ts: "+
+            if (ts < currentWaterMark) {
+                System.out.println("ts: " +
                         String.valueOf(dateFormat.format(new Date(ts))) +
                         " " + "wm: " +
                         dateFormat.format(new Date(currentWaterMark)) +
-                        ": interval: " + String.valueOf(currentWaterMark-ts));
+                        ": interval: " + String.valueOf(currentWaterMark - ts));
                 this.lateEvent++;
                 continue;
             }
             if (isheuristic) {
-                if(ts - lantency > currentWaterMark) {
+                if (ts - lantency > currentWaterMark) {
                     currentWaterMark = ts - lantency;
+                    String[] tmpRes = {String.valueOf(currentWaterMark), String.valueOf(ts)};
+                    csvWriter.writeNext(tmpRes);
                     sourceContext.emitWatermark(new Watermark(currentWaterMark));
                 }
             }
-//            Thread.sleep(500);
-//            // 将事件的事件时间和当前水印写到文件中
-//            String[] tmpRes = {String.valueOf(ts), String.valueOf(currentWaterMark)};
-//            csvWriter.writeNext(tmpRes);
         }
-        System.out.println(this.lateEvent/this.eventCount);
         String[] tmpRes = {String.valueOf(this.lateEvent), String.valueOf(this.eventCount)};
         csvWriter.writeNext(tmpRes);
         csvWriter.close();

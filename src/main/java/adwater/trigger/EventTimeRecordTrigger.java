@@ -1,9 +1,11 @@
 package adwater.trigger;
 
+import com.opencsv.CSVWriter;
 import org.apache.flink.streaming.api.windowing.triggers.Trigger;
 import org.apache.flink.streaming.api.windowing.triggers.TriggerResult;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.streaming.api.windowing.windows.Window;
+import adwater.ResWriter;
 
 public class EventTimeRecordTrigger<W extends Window> extends Trigger<Object, TimeWindow> {
     private static final long serialVersionUID = 1L;
@@ -13,6 +15,8 @@ public class EventTimeRecordTrigger<W extends Window> extends Trigger<Object, Ti
 
     public TriggerResult onElement(Object element, long timestamp, TimeWindow window, TriggerContext ctx) throws Exception {
         if (window.maxTimestamp() <= ctx.getCurrentWatermark()) {
+            String[] tmpRes = {String.valueOf(ctx.getCurrentWatermark()), String.valueOf(window.getEnd())};
+            ResWriter.csvWriter.writeNext(tmpRes);
             return TriggerResult.FIRE;
         } else {
             ctx.registerEventTimeTimer(window.maxTimestamp());
@@ -21,6 +25,8 @@ public class EventTimeRecordTrigger<W extends Window> extends Trigger<Object, Ti
     }
 
     public TriggerResult onEventTime(long time, TimeWindow window, TriggerContext ctx) {
+        String[] tmpRes = {String.valueOf(ctx.getCurrentWatermark()), String.valueOf(window.getEnd())};
+        ResWriter.csvWriter.writeNext(tmpRes);
         return time == window.maxTimestamp() ? TriggerResult.FIRE : TriggerResult.CONTINUE;
     }
 
