@@ -1,4 +1,4 @@
-package adwater;
+package adwater.reswriter;
 
 import com.opencsv.CSVWriter;
 
@@ -7,11 +7,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-public class ResWriter {
+public class LatencyResWriter {
     public static Writer writer;
     public static CSVWriter csvWriter;
 
-    public ResWriter(String outPath) throws IOException {
+    public LatencyResWriter(String outPath) throws IOException {
         File outfile = new File(outPath);
         outfile.createNewFile();
         writer = new FileWriter(outPath);
