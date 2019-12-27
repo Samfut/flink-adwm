@@ -26,7 +26,12 @@
 hs_err_pid*
 
 *.csv
-*.csv
 
 dependency-reduced-pom.xml
 target/
+
+.ipynb_checkpoints/
+__pycache__/
+pickles/
+
+*.txt
