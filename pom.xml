@@ -91,13 +91,6 @@ under the License.
 			<version>1.4</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/ml.dmlc/xgboost4j -->
-		<dependency>
-			<groupId>ml.dmlc</groupId>
-			<artifactId>xgboost4j</artifactId>
-			<version>0.90</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.jpmml</groupId>
 			<artifactId>pmml-evaluator</artifactId>
