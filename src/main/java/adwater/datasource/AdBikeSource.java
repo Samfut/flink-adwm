@@ -1,7 +1,9 @@
 package adwater.datasource;
 
 import adwater.datatypes.BikeRide;
+import adwater.predictor.ClassVector;
 import adwater.srcreader.SrcReader;
+import adwater.strategy.NaiveStrategy;
 import com.opencsv.exceptions.CsvValidationException;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
@@ -44,11 +46,6 @@ public class AdBikeSource implements SourceFunction<BikeRide> {
         long ts = br.getEventTimeStamp();
         if (ts < this.currentWaterMark) {
             this.lateEvent++;
-//                System.out.println("ts: " +
-//                        String.valueOf(dateFormat.format(new Date(ts))) +
-//                        " " + "wm: " +
-//                        dateFormat.format(new Date(currentWaterMark)) +
-//                        ": interval: " + String.valueOf(currentWaterMark - ts));
         }
         src.collectWithTimestamp(br, ts);
         return ts;
@@ -56,11 +53,12 @@ public class AdBikeSource implements SourceFunction<BikeRide> {
 
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
+        NaiveStrategy strategy = new NaiveStrategy();
         this.readHead();
-
         String[] line;
         while ((line = SrcReader.csvReader.readNext())!=null && isRunning) {
             long ts = this.extractEventTimeStamp(line, sourceContext);
+            ClassVector vector = strategy.extracrVector(ts);
 
         }
     }
