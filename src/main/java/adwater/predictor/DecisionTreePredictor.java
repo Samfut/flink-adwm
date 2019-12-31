@@ -17,6 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 public class DecisionTreePredictor {
+
+    private Evaluator evaluator;
+
+    public DecisionTreePredictor() {
+        this.evaluator = this.loadPmml();
+    }
+
     private Evaluator loadPmml(){
         PMML pmml = new PMML();
         InputStream inputStream = null;
@@ -45,13 +52,13 @@ public class DecisionTreePredictor {
         return evaluator;
     }
 
-    private double predict(Evaluator evaluator, int hour, int day, int dayofweek) {
+    public double predict(int hour, int day, int dayofweek) {
         Map<String, Integer> data = new HashMap<String, Integer>();
         data.put("hour", hour);
         data.put("day", day);
         data.put("dayofweek", dayofweek);
 
-        List<InputField> inputFields = evaluator.getInputFields();
+        List<InputField> inputFields = this.evaluator.getInputFields();
         Map<FieldName, FieldValue> arguments = new LinkedHashMap<FieldName, FieldValue>();
         for (InputField inputField : inputFields) {
             FieldName inputFieldName = inputField.getName();
@@ -59,8 +66,8 @@ public class DecisionTreePredictor {
             FieldValue inputFieldValue = inputField.prepare(rawValue);
             arguments.put(inputFieldName, inputFieldValue);
         }
-        Map<FieldName, ?> results = evaluator.evaluate(arguments);
-        List<TargetField> targetFields = evaluator.getTargetFields();
+        Map<FieldName, ?> results = this.evaluator.evaluate(arguments);
+        List<TargetField> targetFields = this.evaluator.getTargetFields();
 
         TargetField targetField = targetFields.get(0);
         FieldName targetFieldName = targetField.getName();

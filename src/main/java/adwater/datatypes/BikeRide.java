@@ -7,6 +7,8 @@ import java.util.Date;
 
 public class BikeRide implements Serializable {
 
+    public static long dropNum = 0;
+
     public Date startTime;
     public Date stopTime;
     public int id;
@@ -32,7 +34,7 @@ public class BikeRide implements Serializable {
     }
 
     public String toString() {
-        return "Event Time: " + dateFormat.format(this.startTime);
+        return "Event Time: " + dateFormat.format(this.startTime) + " drop: "+ String.valueOf(dropNum);
     }
 
 }

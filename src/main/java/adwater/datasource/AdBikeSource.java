@@ -2,10 +2,13 @@ package adwater.datasource;
 
 import adwater.datatypes.BikeRide;
 import adwater.predictor.ClassVector;
+import adwater.predictor.DecisionTreePredictor;
+import adwater.reswriter.WatermarkResWriter;
 import adwater.srcreader.SrcReader;
 import adwater.strategy.NaiveStrategy;
 import com.opencsv.exceptions.CsvValidationException;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
+import org.apache.flink.streaming.api.watermark.Watermark;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -17,12 +20,16 @@ public class AdBikeSource implements SourceFunction<BikeRide> {
     private long lateEvent;
     private long currentWaterMark;
     private SimpleDateFormat dateFormat;
+    private double threshold;
+    private long latency;
 
-    public AdBikeSource() {
+    public AdBikeSource(long latency, double threshold) {
         this.isRunning = true;
         this.eventCount = 0L;
         this.lateEvent = 0L;
         this.currentWaterMark = 0L;
+        this.latency = latency;
+        this.threshold = threshold;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
     }
 
@@ -53,14 +60,25 @@ public class AdBikeSource implements SourceFunction<BikeRide> {
 
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
-        NaiveStrategy strategy = new NaiveStrategy();
+        NaiveStrategy strategy = new NaiveStrategy(0.3);
         this.readHead();
         String[] line;
         while ((line = SrcReader.csvReader.readNext())!=null && isRunning) {
             long ts = this.extractEventTimeStamp(line, sourceContext);
-            ClassVector vector = strategy.extracrVector(ts);
-
+            long l = strategy.make(ts, this.currentWaterMark);
+            if(l < 0) {
+                continue;
+            }
+            if (ts - l > currentWaterMark) {
+                currentWaterMark = ts - l;
+                String[] tmpRes = {String.valueOf(currentWaterMark), String.valueOf(ts)};
+                WatermarkResWriter.csvWriter.writeNext(tmpRes);
+                sourceContext.emitWatermark(new Watermark(currentWaterMark));
+            }
         }
+
+        String[] tmpRes = {String.valueOf(this.lateEvent), String.valueOf(this.eventCount)};
+        WatermarkResWriter.csvWriter.writeNext(tmpRes);
     }
 
     @Override

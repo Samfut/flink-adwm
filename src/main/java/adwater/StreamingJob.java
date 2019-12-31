@@ -18,6 +18,7 @@
 
 package adwater;
 
+import adwater.datasource.AdBikeSource;
 import adwater.datasource.BikeSource;
 import adwater.datatypes.BikeRide;
 import adwater.reswriter.LatencyResWriter;
@@ -25,14 +26,19 @@ import adwater.reswriter.WatermarkResWriter;
 import adwater.srcreader.SrcReader;
 import adwater.trigger.EventTimeRecordTrigger;
 import org.apache.commons.cli.*;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.windowing.WindowFunction;
+import org.apache.flink.streaming.api.watermark.Watermark;
 import org.apache.flink.streaming.api.windowing.assigners.TumblingEventTimeWindows;
 import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
+import org.apache.flink.util.OutputTag;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -93,16 +99,19 @@ public class StreamingJob {
 
         // init datasource
         boolean isheuristic = true;
-        long lantency = 1000L;
-        DataStream<BikeRide> bikerides = env.addSource(
-                new BikeSource(
-                        isheuristic,
-                        lantency
-                ));
+        long lantency = 0L;
 
+        BikeSource bs =  new BikeSource(isheuristic, lantency);
+//        BikeSource bs =  new AdBikeSource(lantency, 0.3);
+
+        SingleOutputStreamOperator<BikeRide> bikerides = env.addSource(bs);
+
+        // store drop data
+        OutputTag<BikeRide> outputTag = new OutputTag<BikeRide>("late-data"){};
         // simple output per window count
-        bikerides.keyBy(x -> x.id).window(TumblingEventTimeWindows.of(Time.seconds(60)))
+        bikerides.keyBy(x -> x.id).window(TumblingEventTimeWindows.of(Time.seconds(30)))
                 .trigger(EventTimeRecordTrigger.create())
+                .sideOutputLateData(outputTag)
                 .apply(new WindowFunction<BikeRide, String, Integer, TimeWindow>() {
                     @Override
                     public void apply(Integer integer, TimeWindow timeWindow, Iterable<BikeRide> iterable, Collector<String> collector) throws Exception {
@@ -119,7 +128,20 @@ public class StreamingJob {
                         collector.collect(result);
                     }
                 });
-        bikerides.print();
+
+//         record drop
+//        BikeRide init = new BikeRide();
+//        DataStream<BikeRide> drop = bikerides
+//                .getSideOutput(outputTag)
+//                .map(new MapFunction<BikeRide, BikeRide>() {
+//                    @Override
+//                    public BikeRide map(BikeRide bikeRide) throws Exception {
+//                        BikeRide.dropNum++;
+//                        return null;
+//                    }
+//                });
+
+//        drop.print();
 
         // exec system
         env.execute("Flink Streaming Java API Skeleton");

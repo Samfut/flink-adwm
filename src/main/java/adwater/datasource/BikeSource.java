@@ -18,8 +18,8 @@ public class BikeSource implements SourceFunction<BikeRide> {
     private boolean isRunning;
     private boolean isheuristic;
     private long lantency;
-    private long eventCount;
-    private long lateEvent;
+    public long eventCount;
+    public long lateEvent;
     private long currentWaterMark;
 
     public BikeSource(boolean isheuristic, long lantency) throws IOException {
@@ -50,11 +50,6 @@ public class BikeSource implements SourceFunction<BikeRide> {
         long ts = br.getEventTimeStamp();
         if(ts < this.currentWaterMark) {
             this.lateEvent++;
-//                System.out.println("ts: " +
-//                        String.valueOf(dateFormat.format(new Date(ts))) +
-//                        " " + "wm: " +
-//                        dateFormat.format(new Date(currentWaterMark)) +
-//                        ": interval: " + String.valueOf(currentWaterMark - ts));
         }
         src.collectWithTimestamp(br, ts);
         return ts;
@@ -71,7 +66,6 @@ public class BikeSource implements SourceFunction<BikeRide> {
         String[] line;
         while ((line = SrcReader.csvReader.readNext()) != null && isRunning) {
             long ts = this.extractEventTimeStamp(line, sourceContext);
-
             if (isheuristic) {
                 if (ts - lantency > currentWaterMark) {
                     currentWaterMark = ts - lantency;
@@ -80,11 +74,12 @@ public class BikeSource implements SourceFunction<BikeRide> {
                     sourceContext.emitWatermark(new Watermark(currentWaterMark));
                 }
             }
-
         }
-
-        String[] tmpRes = {String.valueOf(this.lateEvent), String.valueOf(this.eventCount)};
-        WatermarkResWriter.csvWriter.writeNext(tmpRes);
+        // record drop
+        String[] tmpRes1 = {String.valueOf(this.lateEvent), String.valueOf(this.eventCount)};
+        String[] tmpRes2 = {String.valueOf(BikeRide.dropNum), String.valueOf(this.eventCount)};
+        WatermarkResWriter.csvWriter.writeNext(tmpRes1);
+        WatermarkResWriter.csvWriter.writeNext(tmpRes2);
     }
 
     @Override
