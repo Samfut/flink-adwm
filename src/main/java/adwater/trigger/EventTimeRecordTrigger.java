@@ -1,5 +1,9 @@
 package adwater.trigger;
 
+import adwater.datasource.BikeRideSource;
+import adwater.datasource.BikeSource;
+import adwater.datatypes.BikeRide;
+import adwater.reswriter.DisOrderResWriter;
 import org.apache.flink.streaming.api.windowing.triggers.Trigger;
 import org.apache.flink.streaming.api.windowing.triggers.TriggerResult;
 import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
@@ -16,6 +20,15 @@ public class EventTimeRecordTrigger<W extends Window> extends Trigger<Object, Ti
         if (window.maxTimestamp() <= ctx.getCurrentWatermark()) {
             String[] tmpRes = {String.valueOf(ctx.getCurrentWatermark()), String.valueOf(window.getEnd())};
             LatencyResWriter.csvWriter.writeNext(tmpRes);
+            LatencyResWriter.watermark = ctx.getCurrentWatermark();
+            String[] tmpRes1 = {
+                    String.valueOf(window.getEnd()),
+                    String.valueOf(BikeRideSource.lateEvent-DisOrderResWriter.lastCount),
+                    String.valueOf(BikeRideSource.eventCount-DisOrderResWriter.preEvent)
+            };
+            DisOrderResWriter.lastCount = BikeRideSource.lateEvent;
+            DisOrderResWriter.preEvent = BikeRideSource.eventCount;
+            DisOrderResWriter.csvWriter.writeNext(tmpRes1);
             return TriggerResult.FIRE;
         } else {
             ctx.registerEventTimeTimer(window.maxTimestamp());
@@ -25,7 +38,16 @@ public class EventTimeRecordTrigger<W extends Window> extends Trigger<Object, Ti
 
     public TriggerResult onEventTime(long time, TimeWindow window, TriggerContext ctx) {
         String[] tmpRes = {String.valueOf(ctx.getCurrentWatermark()), String.valueOf(window.getEnd())};
+        LatencyResWriter.watermark = ctx.getCurrentWatermark();
         LatencyResWriter.csvWriter.writeNext(tmpRes);
+        String[] tmpRes1 = {
+                String.valueOf(window.getEnd()),
+                String.valueOf(BikeRideSource.lateEvent-DisOrderResWriter.lastCount),
+                String.valueOf(BikeRideSource.eventCount-DisOrderResWriter.preEvent)
+        };
+        DisOrderResWriter.lastCount = BikeRideSource.lateEvent;
+        DisOrderResWriter.preEvent = BikeRideSource.eventCount;
+        DisOrderResWriter.csvWriter.writeNext(tmpRes1);
         return time == window.maxTimestamp() ? TriggerResult.FIRE : TriggerResult.CONTINUE;
     }
 

@@ -20,10 +20,6 @@ public class DecisionTreePredictor {
 
     private Evaluator evaluator;
 
-    public DecisionTreePredictor() {
-        this.evaluator = this.loadPmml();
-    }
-
     private Evaluator loadPmml(){
         PMML pmml = new PMML();
         InputStream inputStream = null;
@@ -50,6 +46,10 @@ public class DecisionTreePredictor {
         Evaluator evaluator = modelEvaluatorFactory.newModelEvaluator(pmml);
         pmml = null;
         return evaluator;
+    }
+
+    public DecisionTreePredictor() {
+        this.evaluator = this.loadPmml();
     }
 
     public double predict(int hour, int day, int dayofweek) {

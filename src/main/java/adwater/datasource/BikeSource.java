@@ -2,6 +2,8 @@ package adwater.datasource;
 
 import adwater.datatypes.BikeRide;
 
+import adwater.reswriter.DisOrderResWriter;
+import adwater.reswriter.LatencyResWriter;
 import com.opencsv.exceptions.CsvValidationException;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.api.watermark.Watermark;
@@ -13,14 +15,13 @@ import java.util.Date;
 import adwater.reswriter.WatermarkResWriter;
 import adwater.srcreader.SrcReader;
 
-public class BikeSource implements SourceFunction<BikeRide> {
+public class BikeSource extends BikeRideSource {
 
     private boolean isRunning;
     private boolean isheuristic;
     private long lantency;
-    public long eventCount;
-    public long lateEvent;
     private long currentWaterMark;
+    private long drop;
 
     public BikeSource(boolean isheuristic, long lantency) throws IOException {
         this.isRunning = true;
@@ -28,6 +29,7 @@ public class BikeSource implements SourceFunction<BikeRide> {
         this.lantency = lantency;
         this.eventCount = 0;
         this.currentWaterMark = 0L;
+        this.drop = 0;
     }
 
     // read csv head
@@ -51,15 +53,15 @@ public class BikeSource implements SourceFunction<BikeRide> {
         if(ts < this.currentWaterMark) {
             this.lateEvent++;
         }
+        if(ts <= LatencyResWriter.watermark) {
+            this.drop++;
+        }
         src.collectWithTimestamp(br, ts);
         return ts;
     }
 
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
-        // format date
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
-
         this.readHead();
 
         // start produce data
@@ -77,7 +79,7 @@ public class BikeSource implements SourceFunction<BikeRide> {
         }
         // record drop
         String[] tmpRes1 = {String.valueOf(this.lateEvent), String.valueOf(this.eventCount)};
-        String[] tmpRes2 = {String.valueOf(BikeRide.dropNum), String.valueOf(this.eventCount)};
+        String[] tmpRes2 = {String.valueOf(this.drop), String.valueOf(this.eventCount)};
         WatermarkResWriter.csvWriter.writeNext(tmpRes1);
         WatermarkResWriter.csvWriter.writeNext(tmpRes2);
     }

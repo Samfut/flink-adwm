@@ -21,6 +21,7 @@ package adwater;
 import adwater.datasource.AdBikeSource;
 import adwater.datasource.BikeSource;
 import adwater.datatypes.BikeRide;
+import adwater.reswriter.DisOrderResWriter;
 import adwater.reswriter.LatencyResWriter;
 import adwater.reswriter.WatermarkResWriter;
 import adwater.srcreader.SrcReader;
@@ -63,6 +64,7 @@ public class StreamingJob {
         // set filePath
         String WaterMarkOutPath = "/Users/yangs/Desktop/result/water.csv";
         String LatencyOutPath = "/Users/yangs/Desktop/result/timelatency.csv";
+        String DisOrderOutPath = "/Users/yangs/Desktop/result/disorder.csv";
         URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201810/CB20181001.csv");
         String bikeDataPath = bikeDataUrl.getFile();
 
@@ -96,20 +98,23 @@ public class StreamingJob {
         // init res writer
         new LatencyResWriter(LatencyOutPath);
         new WatermarkResWriter(WaterMarkOutPath);
+        new DisOrderResWriter(DisOrderOutPath);
 
         // init datasource
         boolean isheuristic = true;
-        long lantency = 0L;
+        long lantency = 3000;
+        long windowSize = 60;
+
 
         BikeSource bs =  new BikeSource(isheuristic, lantency);
 //        BikeSource bs =  new AdBikeSource(lantency, 0.3);
 
-        SingleOutputStreamOperator<BikeRide> bikerides = env.addSource(bs);
+        DataStream<BikeRide> bikerides = env.addSource(bs);
 
         // store drop data
         OutputTag<BikeRide> outputTag = new OutputTag<BikeRide>("late-data"){};
         // simple output per window count
-        bikerides.keyBy(x -> x.id).window(TumblingEventTimeWindows.of(Time.seconds(30)))
+        bikerides.keyBy(x -> x.id).window(TumblingEventTimeWindows.of(Time.seconds(windowSize)))
                 .trigger(EventTimeRecordTrigger.create())
                 .sideOutputLateData(outputTag)
                 .apply(new WindowFunction<BikeRide, String, Integer, TimeWindow>() {
@@ -129,19 +134,6 @@ public class StreamingJob {
                     }
                 });
 
-//         record drop
-//        BikeRide init = new BikeRide();
-//        DataStream<BikeRide> drop = bikerides
-//                .getSideOutput(outputTag)
-//                .map(new MapFunction<BikeRide, BikeRide>() {
-//                    @Override
-//                    public BikeRide map(BikeRide bikeRide) throws Exception {
-//                        BikeRide.dropNum++;
-//                        return null;
-//                    }
-//                });
-
-//        drop.print();
 
         // exec system
         env.execute("Flink Streaming Java API Skeleton");
@@ -149,6 +141,7 @@ public class StreamingJob {
         // store res(wm/la) to disk
         LatencyResWriter.csvWriter.close();
         WatermarkResWriter.csvWriter.close();
+        DisOrderResWriter.csvWriter.close();
     }
 }
 

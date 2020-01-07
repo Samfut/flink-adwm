@@ -13,7 +13,7 @@ public class NaiveStrategy {
     private SimpleDateFormat dateFormat;
     private Calendar calendar;
     private DecisionTreePredictor decisionTreePredictor;
-    private long maxTimeStamp;
+    private long maxDelay;
     private double delta;
 
     public NaiveStrategy(double delta) {
@@ -38,11 +38,12 @@ public class NaiveStrategy {
     }
 
     public long make(long timestamp, long watermark) {
-        maxTimeStamp = Math.max(maxTimeStamp, timestamp);
-
+        // 记得更新这个值 不然会一直维持最大值
+        maxDelay = Math.max(maxDelay, timestamp - watermark);
         ClassVector vector = this.extracrVector(timestamp);
         double disorder = this.predict(vector.hour, vector.day, vector.dayofweek);
-        return -1;
+        double latency = maxDelay * disorder;
+        long res = (long) latency;
+        return res;
     }
-
 }
