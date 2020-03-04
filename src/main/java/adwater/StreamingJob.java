@@ -102,12 +102,11 @@ public class StreamingJob {
 
         // init datasource
         boolean isheuristic = true;
-        long lantency = 3000;
+        long lantency = 1500;
         long windowSize = 60;
 
-
-        BikeSource bs =  new BikeSource(isheuristic, lantency);
-//        BikeSource bs =  new AdBikeSource(lantency, 0.3);
+//        BikeSource bs =  new BikeSource(isheuristic, lantency);
+        AdBikeSource bs =  new AdBikeSource(0.2, 60);
 
         DataStream<BikeRide> bikerides = env.addSource(bs);
 

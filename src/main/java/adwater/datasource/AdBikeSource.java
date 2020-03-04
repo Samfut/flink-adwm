@@ -23,16 +23,21 @@ public class AdBikeSource extends BikeRideSource {
     private double threshold;
     private long latency;
     private long drop;
+    private long windowSize;
+    private long preTimeStamp;
+    private long preLate;
+    private long preEvent;
 
-    public AdBikeSource(long latency, double threshold) {
+    public AdBikeSource(double threshold, long windowSize) {
         this.isRunning = true;
         this.eventCount = 0L;
         this.lateEvent = 0L;
         this.currentWaterMark = 0L;
         this.drop = 0;
-        this.latency = latency;
         this.threshold = threshold;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
+        this.windowSize = windowSize;
+        this.preTimeStamp = 0;
     }
 
     // read csv head
@@ -65,13 +70,17 @@ public class AdBikeSource extends BikeRideSource {
 
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
-        NaiveStrategy strategy = new NaiveStrategy(0.3);
+        NaiveStrategy strategy = new NaiveStrategy(0.1);
         this.readHead();
+        preLate = 0;
+        preEvent = 0;
+        preTimeStamp = initEvent(sourceContext);
+
         String[] line;
         while ((line = SrcReader.csvReader.readNext())!=null && isRunning) {
             long ts = this.extractEventTimeStamp(line, sourceContext);
-            long l = strategy.make(ts, this.currentWaterMark);
-            if(l < 0) {
+            long l = strategy.make(ts, this.currentWaterMark, countLateRate(ts));
+            if(l==-1) {
                 continue;
             }
             if (ts - l > currentWaterMark) {
@@ -80,12 +89,31 @@ public class AdBikeSource extends BikeRideSource {
                 WatermarkResWriter.csvWriter.writeNext(tmpRes);
                 sourceContext.emitWatermark(new Watermark(currentWaterMark));
             }
+//            Thread.sleep(100);
         }
 
         String[] tmpRes1 = {String.valueOf(this.lateEvent), String.valueOf(this.eventCount)};
         String[] tmpRes2 = {String.valueOf(this.drop), String.valueOf(this.eventCount)};
         WatermarkResWriter.csvWriter.writeNext(tmpRes1);
         WatermarkResWriter.csvWriter.writeNext(tmpRes2);
+    }
+
+    public long initEvent(SourceContext<BikeRide> src) throws IOException, CsvValidationException {
+        String[] line;
+        line = SrcReader.csvReader.readNext();
+        return this.extractEventTimeStamp(line, src);
+    }
+
+    public double countLateRate(long ts) {
+        double rate = -1.0;
+        // 多久更新一次迟到率
+        if (ts - preTimeStamp >= windowSize * 1000 * 10) {
+            rate = (double) (this.lateEvent - this.preLate) / (this.eventCount-this.preEvent);
+            this.preLate = this.lateEvent;
+            this.preEvent = this.eventCount;
+            preTimeStamp = ts;
+        }
+        return rate;
     }
 
     @Override
