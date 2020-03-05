@@ -48,6 +48,7 @@ def csv2ts(csv_file: str):
 
 
 # 调用该函数将其他月份的数据切分成一个数组，存储到文件夹citibike文件夹中，这个函数是用来产生训练数据集的。
+# 同时也是为flink准备
 def divide2day(data):
     
     '''

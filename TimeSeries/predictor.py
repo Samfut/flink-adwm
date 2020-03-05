@@ -28,6 +28,7 @@ class LSTMPredictor:
         # 获取训练数据
         x,y = l.get_train_vec(CB201810)
         # 训练模型
+        l.train_month = CB201810
         l.train_model(x,y)
         m = l.train_model(x,y)
         pred = m.predict(x)
@@ -37,10 +38,12 @@ class LSTMPredictor:
             self.model 训练出的模型
             self.train_x 训练向量集合
             self.train_y 训练label集合
+            self.train_month 训练月份
         """
         self.model = None
         self.train_x = None
         self.train_y = None
+        self.train_month = ''
 
     def train_model(self, train_x, y):
         """
@@ -49,8 +52,10 @@ class LSTMPredictor:
             model.predict(test_x)
         返回预测结果
         """
-        if os.path.isfile('./lstm.h5'):
-            model = load_model("./lstm.h5")
+        model_path = './'+self.train_month.split('/')[-1]+'.lstm.h5'
+        print(model_path)
+        if os.path.isfile(model_path):
+            model = load_model(model_path)
             self.model = model
             return model
         model = Sequential()
@@ -58,7 +63,7 @@ class LSTMPredictor:
         model.add(Dense(1))
         model.compile(loss='mean_squared_error', optimizer='adam')
         model.fit(train_x, y, epochs=100, batch_size=1, verbose=2)
-        model.save("lstm.h5")
+        model.save(model_path)
         self.model = model
         return model
     
@@ -73,7 +78,7 @@ class LSTMPredictor:
         # 这里注意需要对train_x进行reshape
         train_x = np.reshape(train_x, (train_x.shape[0], TIMESTEPS, train_x.shape[1]))
         self.train_x = train_x
-        self.train_model = train_y
+        self.train_y = train_y
         return train_x, train_y
 
 
