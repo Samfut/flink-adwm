@@ -27,8 +27,9 @@ public class AdBikeSource extends BikeRideSource {
     private long preTimeStamp;
     private long preLate;
     private long preEvent;
+    private int monitorPer;
 
-    public AdBikeSource(double threshold, long windowSize) {
+    public AdBikeSource(double threshold, long windowSize, int monitorPer) {
         this.isRunning = true;
         this.eventCount = 0L;
         this.lateEvent = 0L;
@@ -38,6 +39,7 @@ public class AdBikeSource extends BikeRideSource {
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
         this.windowSize = windowSize;
         this.preTimeStamp = 0;
+        this.monitorPer = monitorPer;
     }
 
     // read csv head
@@ -70,7 +72,7 @@ public class AdBikeSource extends BikeRideSource {
 
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
-        NaiveStrategy strategy = new NaiveStrategy(0.1);
+        NaiveStrategy strategy = new NaiveStrategy(threshold);
         this.readHead();
         preLate = 0;
         preEvent = 0;
@@ -83,13 +85,14 @@ public class AdBikeSource extends BikeRideSource {
             if(l==-1) {
                 continue;
             }
+//            System.out.println(l);
             if (ts - l > currentWaterMark) {
                 currentWaterMark = ts - l;
                 String[] tmpRes = {String.valueOf(currentWaterMark), String.valueOf(ts)};
                 WatermarkResWriter.csvWriter.writeNext(tmpRes);
                 sourceContext.emitWatermark(new Watermark(currentWaterMark));
             }
-//            Thread.sleep(100);
+//            Thread.sleep(1000);
         }
 
         String[] tmpRes1 = {String.valueOf(this.lateEvent), String.valueOf(this.eventCount)};
@@ -107,7 +110,7 @@ public class AdBikeSource extends BikeRideSource {
     public double countLateRate(long ts) {
         double rate = -1.0;
         // 多久更新一次迟到率
-        if (ts - preTimeStamp >= windowSize * 1000 * 10) {
+        if (ts - preTimeStamp >= windowSize * 1000 * monitorPer) {
             rate = (double) (this.lateEvent - this.preLate) / (this.eventCount-this.preEvent);
             this.preLate = this.lateEvent;
             this.preEvent = this.eventCount;

@@ -16,15 +16,15 @@ public class NaiveStrategy {
     private DecisionTreePredictor decisionTreePredictor;
     private long maxDelay;
     private double latency;
-    private double delta;
+    private double threshold;
     public double[] disorders;
     private double lastDisorder;
 
     public long lateEvent;
     public long eventCount;
 
-    public NaiveStrategy(double delta) {
-        this.delta = delta;
+    public NaiveStrategy(double threshold) {
+        this.threshold = threshold;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
         this.decisionTreePredictor = new DecisionTreePredictor();
         this.lateEvent = 0;
@@ -48,42 +48,69 @@ public class NaiveStrategy {
         return this.decisionTreePredictor.predict(hour, day, dayofweek);
     }
 
-    // lateRate用来监控延迟率，如果是-1表示没到监控周期
+
     public long make(long timestamp, long watermark, double lateRate) {
 
-        maxDelay = Math.max(maxDelay, timestamp - watermark);
-        ClassVector vector = this.extracrVector(timestamp);
-        double disorder = this.predict(vector.hour, vector.day, vector.dayofweek);
-
-        if(ThreadLocalRandom.current().nextDouble()>1-disorder) {
-            return -1;
-        }
-
+        // lateRate用来监控延迟率，如果是-1表示没到监控周期
         if(lateRate < 0) {
             if(latency < 0) {
                 latency = 0;
             }
             return (long)latency;
         }
+        // 开始预测
+        maxDelay = Math.max(maxDelay, timestamp - watermark);
+        if(maxDelay > 5500) {
+            maxDelay = 5500;
+        }
+        ClassVector vector = this.extracrVector(timestamp);
+        double disorder = this.predict(vector.hour, vector.day, vector.dayofweek);
 
-        // 每次更新预测值的时候表示阶段更新了，就更新一下maxDelay
-        if(disorder != lastDisorder) {
-            maxDelay = 0;
-            lastDisorder = disorder;
+        //  如果监控出来迟到率比较低的时候
+        if(lateRate <= threshold) {
+            // 当前乱序率较低，那么继续以较低的latency
+            if(disorder<=threshold) {
+                latency = disorder * maxDelay;
+//                latency = 0;
+            }
+            // 否则就是在较高的乱序率下降低，说明延迟较高 要缓缓降低
+            else {
+//                if(latency == 0) {
+//                    latency = disorder * maxDelay;
+//                }
+                latency = latency - (1-disorder)*maxDelay;
+            }
+            if(ThreadLocalRandom.current().nextDouble() > threshold - lateRate) {
+                if(latency<0) {
+                    latency = 0;
+                }
+                return (long) latency;
+            }
+            else {
+                return -1;
+            }
+        }
+        //  如果监控出来迟到率比较高的时候
+        else {
+            // 当前乱序率较低，说明速度太快，那么需要增加latency
+            if(disorder<=threshold) {
+                latency = latency + lateRate * maxDelay;
+            }
+            // 否则就是在较高的乱序率
+            else {
+                latency = disorder * maxDelay;
+            }
+            if(ThreadLocalRandom.current().nextDouble() > lateRate) {
+                if(latency<0) {
+                    latency = 0;
+                }
+                return (long) latency;
+            }
+            else {
+                return -1;
+            }
         }
 
-        int i = 0;
-        if(lateRate > delta + 0.05) {
-            i = 1;
-        } else {
-            i = -1;
-        }
 
-        latency = latency + maxDelay * disorder * i;
-        long res = (long) latency;
-        if(res < 0) {
-            res = 0;
-        }
-        return res;
     }
 }

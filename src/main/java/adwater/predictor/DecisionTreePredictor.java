@@ -24,7 +24,7 @@ public class DecisionTreePredictor {
         PMML pmml = new PMML();
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("/Users/yangs/Desktop/result/treemodel.pmml");
+            inputStream = new FileInputStream("/Users/yangs/Projects/adwater/TimeSeries/treemodel.pmml");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -81,5 +81,16 @@ public class DecisionTreePredictor {
         }
 
         return primitiveValue;
+    }
+
+    public static void main(String[] args) {
+        DecisionTreePredictor d = new DecisionTreePredictor();
+        System.out.println(d.predict(0,1,0));
+        System.out.println(d.predict(1,1,0));
+        System.out.println(d.predict(2,1,0));
+        System.out.println(d.predict(3,1,0));
+        System.out.println(d.predict(4,1,0));
+        System.out.println(d.predict(5,1,0));
+        System.out.println(d.predict(6,1,0));
     }
 }
