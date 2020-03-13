@@ -28,8 +28,9 @@ public class AdBikeSource extends BikeRideSource {
     private long preLate;
     private long preEvent;
     private int monitorPer;
+    private long maxDelayThreshold;
 
-    public AdBikeSource(double threshold, long windowSize, int monitorPer) {
+    public AdBikeSource(double threshold, long windowSize, int monitorPer, long maxDelayThreshold) {
         this.isRunning = true;
         this.eventCount = 0L;
         this.lateEvent = 0L;
@@ -40,6 +41,7 @@ public class AdBikeSource extends BikeRideSource {
         this.windowSize = windowSize;
         this.preTimeStamp = 0;
         this.monitorPer = monitorPer;
+        this.maxDelayThreshold = maxDelayThreshold;
     }
 
     // read csv head
@@ -72,7 +74,7 @@ public class AdBikeSource extends BikeRideSource {
 
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
-        NaiveStrategy strategy = new NaiveStrategy(threshold);
+        NaiveStrategy strategy = new NaiveStrategy(threshold, maxDelayThreshold);
         this.readHead();
         preLate = 0;
         preEvent = 0;

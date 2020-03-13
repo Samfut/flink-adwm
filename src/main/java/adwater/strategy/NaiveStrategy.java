@@ -19,11 +19,12 @@ public class NaiveStrategy {
     private double threshold;
     public double[] disorders;
     private double lastDisorder;
+    private long maxDelayThreshold;
 
     public long lateEvent;
     public long eventCount;
 
-    public NaiveStrategy(double threshold) {
+    public NaiveStrategy(double threshold, long maxDelayThreshold) {
         this.threshold = threshold;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
         this.decisionTreePredictor = new DecisionTreePredictor();
@@ -31,6 +32,7 @@ public class NaiveStrategy {
         this.eventCount = 0;
         this.latency = 0;
         this.lastDisorder = 0.0;
+        this.maxDelayThreshold = maxDelayThreshold;
     }
 
     private ClassVector extracrVector(long timestamp) {
@@ -60,8 +62,8 @@ public class NaiveStrategy {
         }
         // 开始预测
         maxDelay = Math.max(maxDelay, timestamp - watermark);
-        if(maxDelay > 5500) {
-            maxDelay = 5500;
+        if(maxDelay > maxDelayThreshold) {
+            maxDelay = maxDelayThreshold;
         }
         ClassVector vector = this.extracrVector(timestamp);
         double disorder = this.predict(vector.hour, vector.day, vector.dayofweek);
