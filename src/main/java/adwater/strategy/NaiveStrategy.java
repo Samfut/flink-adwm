@@ -72,7 +72,7 @@ public class NaiveStrategy {
         if(lateRate <= threshold) {
             // 当前乱序率较低，那么继续以较低的latency
             if(disorder<=threshold) {
-                latency = disorder * maxDelay;
+                latency = disorder * Math.min(latency, maxDelay);;
 //                latency = 0;
             }
             // 否则就是在较高的乱序率下降低，说明延迟较高 要缓缓降低
@@ -96,7 +96,7 @@ public class NaiveStrategy {
         else {
             // 当前乱序率较低，说明速度太快，那么需要增加latency
             if(disorder<=threshold) {
-                latency = latency + lateRate * maxDelay;
+                latency = latency + lateRate * Math.min(latency, maxDelay);
             }
             // 否则就是在较高的乱序率
             else {
