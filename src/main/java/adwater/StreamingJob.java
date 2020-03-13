@@ -108,7 +108,7 @@ public class StreamingJob {
         long windowSize = 60;
 
 //        BikeSource bs =  new BikeSource(isheuristic, lantency);
-        AdBikeSource bs =  new AdBikeSource(0.3, 60, 10, 5500);
+        AdBikeSource bs =  new AdBikeSource(0.3, 60, 10, 4700);
 
         DataStream<BikeRide> bikerides = env.addSource(bs);
 
