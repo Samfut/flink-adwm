@@ -80,7 +80,7 @@ public class NaiveStrategy {
 //                if(latency == 0) {
 //                    latency = disorder * maxDelay;
 //                }
-                latency = latency - (1-disorder)*maxDelay;
+                latency = latency - (1-disorder)*latency;
             }
             if(ThreadLocalRandom.current().nextDouble() > threshold - lateRate) {
                 if(latency<0) {
