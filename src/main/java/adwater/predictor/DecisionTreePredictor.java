@@ -24,7 +24,7 @@ public class DecisionTreePredictor {
         PMML pmml = new PMML();
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("/Users/yangs/Projects/adwater/TimeSeries/treemodel.pmml");
+            inputStream = new FileInputStream("/Users/yangs/Projects/adwater/TimeSeries/citybike/treemodel.pmml");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
