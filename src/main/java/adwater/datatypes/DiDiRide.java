@@ -1,10 +1,11 @@
 package adwater.datatypes;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BikeRide implements Serializable {
+public class DiDiRide implements Serializable {
 
     public static long dropNum = 0;
 
@@ -13,9 +14,9 @@ public class BikeRide implements Serializable {
     public int id;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-    public BikeRide(){}
+    public DiDiRide(){}
 
-    public BikeRide(String startTime, String stopTime){
+    public DiDiRide(String startTime, String stopTime){
         try {
             Date startDate = dateFormat.parse(startTime);
             Date stopDate = dateFormat.parse(stopTime);

@@ -57,15 +57,15 @@ import java.util.Iterator;
  * <p>If you change the name of the main class (with the public static void main(String[] args))
  * method, change the respective entry in the POM.xml file (simply search for 'mainClass').
  */
-public class StreamingJob {
+public class DiStreamingJob {
 
     public static void main(String[] args) throws Exception {
 
         // set filePath
-        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/water.csv";
-        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/timelatency.csv";
-        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/disorder.csv";
-        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201810/CB20181001.csv");
+        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/water.csv";
+        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/timelatency.csv";
+        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/disorder.csv";
+        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201705/DIDI20170501.csv");
         String bikeDataPath = bikeDataUrl.getFile();
 
         // init params
@@ -103,12 +103,12 @@ public class StreamingJob {
         // init datasource
         boolean isheuristic = true;
         // 延迟等待参数
-        long lantency = 2000;
+        long lantency = 1000 * 15 * 16;
         // 窗口大小参数
-        long windowSize = 60;
+        long windowSize = 60*1;
 
-//        BikeSource bs =  new BikeSource(isheuristic, lantency);
-        AdBikeSource bs =  new AdBikeSource(0.3, 60, 10, 4700);
+        BikeSource bs =  new BikeSource(isheuristic, lantency);
+//        AdBikeSource bs =  new AdBikeSource(0.3, 60, 10, 4700);
 
         DataStream<BikeRide> bikerides = env.addSource(bs);
 
@@ -127,7 +127,7 @@ public class StreamingJob {
                             count++;
                             it.next();
                         }
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String result = sdf.format(timeWindow.getStart()) + "<->" + sdf.format(timeWindow.getEnd()) + " \n" +
                                 "窗口内元素个数: " + count;
                         System.out.println(result);
