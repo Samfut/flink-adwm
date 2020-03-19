@@ -61,11 +61,17 @@ public class DiStreamingJob {
 
     public static void main(String[] args) throws Exception {
 
-        // set filePath
-        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/water.csv";
-        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/timelatency.csv";
-        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/disorder.csv";
-        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201705/DIDI20170501.csv");
+        // TODO 设置监控性能的结果输出路径 分为2种 一种是周期性水印的监控结果 一种是自适应水印的监控结果
+//        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/water.csv";
+//        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/timelatency.csv";
+//        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/disorder.csv";
+
+        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/water.csv";
+        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/timelatency.csv";
+        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/disorder.csv";
+
+        // 加载数据
+        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201710/DIDI20171004.csv");
         String bikeDataPath = bikeDataUrl.getFile();
 
         // init params
@@ -103,12 +109,17 @@ public class DiStreamingJob {
         // init datasource
         boolean isheuristic = true;
         // 延迟等待参数
-        long lantency = 1000 * 15 * 16;
+        long lantency = 1000 * 15 * 8;
         // 窗口大小参数
         long windowSize = 60*1;
+        // TODO 自适应的参数
+        double threshold = 0.4;
+        int monitorPer = 2;
+        long maxDelayThreshold = 1000 * 15 * 12;
 
-        BikeSource bs =  new BikeSource(isheuristic, lantency);
-//        AdBikeSource bs =  new AdBikeSource(0.3, 60, 10, 4700);
+        // TODO 切换数据源类型分为周期性水印和启发式水印
+//        BikeSource bs =  new BikeSource(isheuristic, lantency);
+        AdBikeSource bs =  new AdBikeSource(threshold, windowSize, monitorPer, maxDelayThreshold);
 
         DataStream<BikeRide> bikerides = env.addSource(bs);
 

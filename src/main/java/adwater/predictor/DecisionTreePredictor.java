@@ -19,12 +19,13 @@ import java.util.Map;
 public class DecisionTreePredictor {
 
     private Evaluator evaluator;
+    private String PmmlPath;
 
     private Evaluator loadPmml(){
         PMML pmml = new PMML();
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("/Users/yangs/Projects/adwater/TimeSeries/citybike/treemodel.pmml");
+            inputStream = new FileInputStream(this.PmmlPath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -48,7 +49,8 @@ public class DecisionTreePredictor {
         return evaluator;
     }
 
-    public DecisionTreePredictor() {
+    public DecisionTreePredictor(String PmmlPath) {
+        this.PmmlPath = PmmlPath;
         this.evaluator = this.loadPmml();
     }
 
@@ -84,7 +86,7 @@ public class DecisionTreePredictor {
     }
 
     public static void main(String[] args) {
-        DecisionTreePredictor d = new DecisionTreePredictor();
+        DecisionTreePredictor d = new DecisionTreePredictor("/Users/yangs/Projects/adwater/TimeSeries/didi/treemodel.pmml");
         System.out.println(d.predict(0,1,0));
         System.out.println(d.predict(1,1,0));
         System.out.println(d.predict(2,1,0));

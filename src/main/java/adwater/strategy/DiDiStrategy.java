@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public class NaiveStrategy {
+public class DiDiStrategy {
 
     private SimpleDateFormat dateFormat;
     private Calendar calendar;
@@ -24,10 +24,10 @@ public class NaiveStrategy {
     public long lateEvent;
     public long eventCount;
 
-    public NaiveStrategy(double threshold, long maxDelayThreshold) {
+    public DiDiStrategy(double threshold, long maxDelayThreshold) {
         this.threshold = threshold;
-        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
-        this.decisionTreePredictor = new DecisionTreePredictor("/Users/yangs/Projects/adwater/TimeSeries/citybike/treemodel.pmml");
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        this.decisionTreePredictor = new DecisionTreePredictor("/Users/yangs/Projects/adwater/TimeSeries/didi/treemodel.pmml");
         this.lateEvent = 0;
         this.eventCount = 0;
         this.latency = 0;
@@ -71,7 +71,7 @@ public class NaiveStrategy {
         //  如果监控出来迟到率比较低的时候
         if(lateRate <= threshold) {
             // 当前乱序率较低，那么继续以较低的latency
-            if(disorder<=threshold) {
+            if(disorder<=threshold+0.2) {
                 latency = disorder * Math.min(latency, maxDelay);;
 //                latency = 0;
             }
@@ -95,7 +95,7 @@ public class NaiveStrategy {
         //  如果监控出来迟到率比较高的时候
         else {
             // 当前乱序率较低，说明速度太快，那么需要增加latency
-            if(disorder<=threshold) {
+            if(disorder<=threshold+0.2) {
                 latency = latency + disorder * Math.min(latency, maxDelay);
             }
             // 否则就是在较高的乱序率

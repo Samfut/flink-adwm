@@ -7,6 +7,7 @@ import adwater.reswriter.DisOrderResWriter;
 import adwater.reswriter.LatencyResWriter;
 import adwater.reswriter.WatermarkResWriter;
 import adwater.srcreader.SrcReader;
+import adwater.strategy.DiDiStrategy;
 import adwater.strategy.NaiveStrategy;
 import com.opencsv.exceptions.CsvValidationException;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
@@ -37,7 +38,9 @@ public class AdBikeSource extends BikeRideSource {
         this.currentWaterMark = 0L;
         this.drop = 0;
         this.threshold = threshold;
-        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
+        //TODO
+        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
         this.windowSize = windowSize;
         this.preTimeStamp = 0;
         this.monitorPer = monitorPer;
@@ -74,7 +77,9 @@ public class AdBikeSource extends BikeRideSource {
 
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
-        NaiveStrategy strategy = new NaiveStrategy(threshold, maxDelayThreshold);
+        //TODO
+        DiDiStrategy strategy = new DiDiStrategy(threshold, maxDelayThreshold);
+//        NaiveStrategy strategy = new NaiveStrategy(threshold, maxDelayThreshold);
         this.readHead();
         preLate = 0;
         preEvent = 0;

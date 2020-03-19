@@ -2,7 +2,7 @@
 <PMML xmlns="http://www.dmg.org/PMML-4_3" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.3">
 	<Header>
 		<Application name="JPMML-SkLearn" version="1.5.26"/>
-		<Timestamp>2020-03-17T07:53:47Z</Timestamp>
+		<Timestamp>2020-03-19T00:02:40Z</Timestamp>
 	</Header>
 	<MiningBuildTask>
 		<Extension>PMMLPipeline(steps=[('classifier', DecisionTreeRegressor(criterion='mse', max_depth=None, max_features=None,
@@ -97,7 +97,7 @@
 										<Node score="0.7747440273037542">
 											<SimplePredicate field="double(day)" operator="lessOrEqual" value="27.0"/>
 											<Node score="0.7657342657342657">
-												<SimplePredicate field="double(day)" operator="lessOrEqual" value="23.5"/>
+												<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
 											</Node>
 										</Node>
 									</Node>
@@ -148,7 +148,7 @@
 										<Node score="0.7005347593582888">
 											<SimplePredicate field="double(day)" operator="lessOrEqual" value="3.5"/>
 											<Node score="0.7291666666666666">
-												<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
+												<SimplePredicate field="double(day)" operator="lessOrEqual" value="2.5"/>
 											</Node>
 										</Node>
 										<Node score="0.6554054054054054">
@@ -156,7 +156,7 @@
 											<Node score="0.6433566433566433">
 												<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 												<Node score="0.6458333333333334">
-													<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
+													<SimplePredicate field="double(day)" operator="lessOrEqual" value="9.5"/>
 												</Node>
 											</Node>
 											<Node score="0.6573426573426573">
@@ -178,15 +178,15 @@
 									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
 									<Node score="0.7258883248730964">
 										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
-										<Node score="0.7068062827225131">
+										<Node score="0.7121212121212122">
 											<SimplePredicate field="double(day)" operator="lessOrEqual" value="23.5"/>
-											<Node score="0.7121212121212122">
-												<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
+											<Node score="0.7068062827225131">
+												<SimplePredicate field="double(day)" operator="lessOrEqual" value="20.0"/>
 											</Node>
 										</Node>
 									</Node>
 									<Node score="0.75">
-										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
+										<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.5"/>
 									</Node>
 								</Node>
 							</Node>
@@ -236,7 +236,7 @@
 									<Node score="0.6410256410256411">
 										<SimplePredicate field="double(day)" operator="lessOrEqual" value="3.5"/>
 										<Node score="0.6356589147286822">
-											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
+											<SimplePredicate field="double(day)" operator="lessOrEqual" value="2.5"/>
 										</Node>
 									</Node>
 									<Node score="0.5853658536585366">
@@ -269,7 +269,7 @@
 											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.0"/>
 										</Node>
 										<Node score="0.5882352941176471">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="12.5"/>
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
 										</Node>
 									</Node>
 									<Node score="0.6692913385826772">
@@ -278,25 +278,25 @@
 									<Node score="0.5377358490566038">
 										<SimplePredicate field="double(day)" operator="lessOrEqual" value="19.5"/>
 									</Node>
-									<Node score="0.6160714285714286">
+									<Node score="0.635036496350365">
 										<SimplePredicate field="double(day)" operator="lessOrEqual" value="24.5"/>
-										<Node score="0.635036496350365">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="22.0"/>
+										<Node score="0.6160714285714286">
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 										</Node>
 									</Node>
 								</Node>
 								<Node score="0.532258064516129">
-									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
+									<SimplePredicate field="double(day)" operator="lessOrEqual" value="26.5"/>
 								</Node>
 							</Node>
 							<Node score="0.6101694915254238">
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="30.5"/>
 							</Node>
 						</Node>
-						<Node score="0.631578947368421">
+						<Node score="0.6190476190476191">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="7.5"/>
-							<Node score="0.6190476190476191">
-								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
+							<Node score="0.631578947368421">
+								<SimplePredicate field="double(day)" operator="lessOrEqual" value="4.0"/>
 							</Node>
 						</Node>
 						<Node score="0.7013888888888888">
@@ -367,22 +367,22 @@
 						<SimplePredicate field="double(day)" operator="lessOrEqual" value="23.0"/>
 						<Node score="0.5342465753424658">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="16.0"/>
-							<Node score="0.5918367346938775">
+							<Node score="0.5625">
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="3.5"/>
-								<Node score="0.5625">
-									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
-									<Node score="0.4722222222222222">
+								<Node score="0.5918367346938775">
+									<SimplePredicate field="double(day)" operator="lessOrEqual" value="2.0"/>
+									<Node score="0.6021505376344086">
+										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="3.5"/>
+									</Node>
+									<Node score="0.5254237288135594">
 										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="4.5"/>
-										<Node score="0.5522388059701493">
-											<SimplePredicate field="double(hour)" operator="lessOrEqual" value="3.5"/>
-										</Node>
 									</Node>
 								</Node>
-								<Node score="0.6021505376344086">
-									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="3.5"/>
-								</Node>
-								<Node score="0.5254237288135594">
+								<Node score="0.4722222222222222">
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="4.5"/>
+									<Node score="0.5522388059701493">
+										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="3.5"/>
+									</Node>
 								</Node>
 							</Node>
 							<Node score="0.4696969696969697">
@@ -399,17 +399,17 @@
 										</Node>
 									</Node>
 									<Node score="0.3333333333333333">
-										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
+										<SimplePredicate field="double(day)" operator="lessOrEqual" value="5.5"/>
 										<Node score="0.3235294117647059">
 											<SimplePredicate field="double(day)" operator="lessOrEqual" value="4.5"/>
 										</Node>
 									</Node>
 								</Node>
 								<Node score="0.5423728813559322">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="4.5"/>
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 								</Node>
 								<Node score="0.43478260869565216">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="5.5"/>
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
 								</Node>
 							</Node>
 							<Node score="0.3968253968253968">
@@ -430,13 +430,13 @@
 									</Node>
 								</Node>
 								<Node score="0.559322033898305">
-									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
+									<SimplePredicate field="double(day)" operator="lessOrEqual" value="12.5"/>
 								</Node>
 								<Node score="0.5">
 									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 								</Node>
 								<Node score="0.5384615384615384">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="14.5"/>
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
 								</Node>
 							</Node>
 							<Node score="0.3787878787878788">
@@ -446,16 +446,16 @@
 									<Node score="0.5185185185185185">
 										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
 										<Node score="0.5">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="11.5"/>
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 										</Node>
 									</Node>
-									<Node score="0.43103448275862066">
+									<Node score="0.45614035087719296">
 										<SimplePredicate field="double(day)" operator="lessOrEqual" value="13.5"/>
-										<Node score="0.45614035087719296">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="10.5"/>
-											<Node score="0.4576271186440678">
-												<SimplePredicate field="double(day)" operator="lessOrEqual" value="7.5"/>
-											</Node>
+										<Node score="0.43103448275862066">
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
+										</Node>
+										<Node score="0.4576271186440678">
+											<SimplePredicate field="double(day)" operator="lessOrEqual" value="7.5"/>
 										</Node>
 									</Node>
 								</Node>
@@ -477,9 +477,9 @@
 							</Node>
 						</Node>
 						<Node score="0.5">
-							<SimplePredicate field="double(day)" operator="lessOrEqual" value="20.5"/>
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 							<Node score="0.5492957746478874">
-								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
+								<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.5"/>
 								<Node score="0.49206349206349204">
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="3.5"/>
 								</Node>
@@ -494,15 +494,15 @@
 									<Node score="0.4576271186440678">
 										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="3.5"/>
 										<Node score="0.49333333333333335">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.5"/>
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 										</Node>
 									</Node>
 									<Node score="0.5087719298245614">
-										<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.5"/>
+										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 									</Node>
 								</Node>
 								<Node score="0.576271186440678">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.5"/>
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 								</Node>
 							</Node>
 							<Node score="0.6111111111111112">
@@ -515,7 +515,7 @@
 						<Node score="0.5679012345679012">
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="4.5"/>
 							<Node score="0.6538461538461539">
-								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
+								<SimplePredicate field="double(day)" operator="lessOrEqual" value="21.5"/>
 								<Node score="0.6855345911949685">
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="3.5"/>
 								</Node>
@@ -525,7 +525,7 @@
 							</Node>
 						</Node>
 						<Node score="0.5568181818181818">
-							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
+							<SimplePredicate field="double(day)" operator="lessOrEqual" value="21.5"/>
 						</Node>
 					</Node>
 					<Node score="0.5074626865671642">
@@ -558,19 +558,19 @@
 					<Node score="0.4852941176470588">
 						<SimplePredicate field="double(hour)" operator="lessOrEqual" value="3.5"/>
 						<Node score="0.5454545454545454">
-							<SimplePredicate field="double(day)" operator="lessOrEqual" value="26.5"/>
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
 						</Node>
 						<Node score="0.40816326530612246">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="27.5"/>
 						</Node>
 						<Node score="0.5333333333333333">
-							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
+							<SimplePredicate field="double(day)" operator="lessOrEqual" value="28.5"/>
 						</Node>
 					</Node>
 					<Node score="0.42857142857142855">
 						<SimplePredicate field="double(hour)" operator="lessOrEqual" value="4.5"/>
 						<Node score="0.3191489361702128">
-							<SimplePredicate field="double(day)" operator="lessOrEqual" value="26.5"/>
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
 						</Node>
 						<Node score="0.5">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="27.5"/>
@@ -580,15 +580,15 @@
 						</Node>
 					</Node>
 					<Node score="0.5342465753424658">
-						<SimplePredicate field="double(day)" operator="lessOrEqual" value="28.5"/>
+						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
 						<Node score="0.48461174242424243">
 							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 						</Node>
 					</Node>
 				</Node>
-				<Node score="0.5476190476190477">
+				<Node score="0.5943396226415094">
 					<SimplePredicate field="double(day)" operator="lessOrEqual" value="16.5"/>
-					<Node score="0.6176470588235294">
+					<Node score="0.6517857142857143">
 						<SimplePredicate field="double(day)" operator="lessOrEqual" value="14.5"/>
 						<Node score="0.6984126984126984">
 							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
@@ -597,15 +597,15 @@
 								<Node score="0.6428571428571429">
 									<SimplePredicate field="double(day)" operator="lessOrEqual" value="4.5"/>
 									<Node score="0.6625766871165644">
-										<SimplePredicate field="double(day)" operator="lessOrEqual" value="2.5"/>
+										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
 									</Node>
 									<Node score="0.6458333333333334">
-										<SimplePredicate field="double(day)" operator="lessOrEqual" value="3.5"/>
+										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 									</Node>
 								</Node>
 							</Node>
 							<Node score="0.7164948453608248">
-								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
+								<SimplePredicate field="double(day)" operator="lessOrEqual" value="9.5"/>
 							</Node>
 							<Node score="0.6554054054054054">
 								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
@@ -623,15 +623,15 @@
 								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 							</Node>
 						</Node>
-						<Node score="0.6517857142857143">
-							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
-							<Node score="0.6623376623376623">
-								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
-							</Node>
+						<Node score="0.6176470588235294">
+							<SimplePredicate field="double(day)" operator="lessOrEqual" value="10.5"/>
+						</Node>
+						<Node score="0.6623376623376623">
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 						</Node>
 					</Node>
-					<Node score="0.5943396226415094">
-						<SimplePredicate field="double(day)" operator="lessOrEqual" value="15.5"/>
+					<Node score="0.5476190476190477">
+						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.0"/>
 					</Node>
 				</Node>
 				<Node score="0.6666666666666666">
@@ -641,9 +641,9 @@
 						<Node score="0.6481481481481481">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="19.5"/>
 							<Node score="0.7357512953367875">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.5"/>
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 								<Node score="0.7259615384615384">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.5"/>
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 								</Node>
 							</Node>
 						</Node>
@@ -658,21 +658,21 @@
 						</Node>
 					</Node>
 				</Node>
-				<Node score="0.6763005780346821">
+				<Node score="0.608433734939759">
 					<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
 					<Node score="0.7142857142857143">
 						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
 					</Node>
-					<Node score="0.608433734939759">
-						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
-					</Node>
-					<Node score="0.6470588235294118">
-						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
-						<Node score="0.6622516556291391">
-							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
-						</Node>
-						<Node score="0.6482758620689655">
-							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
+					<Node score="0.6763005780346821">
+						<SimplePredicate field="double(day)" operator="lessOrEqual" value="29.5"/>
+						<Node score="0.6470588235294118">
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
+							<Node score="0.6622516556291391">
+								<SimplePredicate field="double(day)" operator="lessOrEqual" value="25.5"/>
+							</Node>
+							<Node score="0.6482758620689655">
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="3.5"/>
+							</Node>
 						</Node>
 					</Node>
 				</Node>
@@ -803,7 +803,7 @@
 									<Node score="0.826879271070615">
 										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="8.5"/>
 										<Node score="0.8352272727272727">
-											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
+											<SimplePredicate field="double(day)" operator="lessOrEqual" value="3.5"/>
 										</Node>
 									</Node>
 									<Node score="0.8479087452471483">
@@ -890,10 +890,10 @@
 									<Node score="0.8511326860841424">
 										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="9.5"/>
 										<Node score="0.8466666666666667">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="10.5"/>
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 										</Node>
 										<Node score="0.8793103448275862">
-											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
+											<SimplePredicate field="double(day)" operator="lessOrEqual" value="11.5"/>
 										</Node>
 									</Node>
 									<Node score="0.8188539741219963">
@@ -954,10 +954,10 @@
 							</Node>
 							<Node score="0.8726027397260274">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="14.5"/>
-								<Node score="0.8561549100968188">
+								<Node score="0.8467741935483871">
 									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
-									<Node score="0.8467741935483871">
-										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
+									<Node score="0.8561549100968188">
+										<SimplePredicate field="double(day)" operator="lessOrEqual" value="14.0"/>
 									</Node>
 								</Node>
 							</Node>
@@ -970,11 +970,11 @@
 							<Node score="0.8534743202416919">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="15.5"/>
 								<Node score="0.8327922077922078">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="11.5"/>
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 								</Node>
 							</Node>
 							<Node score="0.8482003129890454">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="11.5"/>
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 							</Node>
 						</Node>
 						<Node score="0.9084406294706724">
@@ -1022,11 +1022,11 @@
 									<Node score="0.8830811554332875">
 										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="17.5"/>
 										<Node score="0.8844984802431611">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="3.5"/>
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 										</Node>
 									</Node>
 									<Node score="0.9081419624217119">
-										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
+										<SimplePredicate field="double(day)" operator="lessOrEqual" value="3.5"/>
 									</Node>
 								</Node>
 								<Node score="0.8828671328671329">
@@ -1063,29 +1063,29 @@
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="17.5"/>
 								</Node>
 							</Node>
-							<Node score="0.9253012048192771">
+							<Node score="0.9168514412416852">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
 								<Node score="0.9044585987261147">
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="20.5"/>
-									<Node score="0.9226932668329177">
+									<Node score="0.9095477386934674">
 										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="19.5"/>
-										<Node score="0.9095477386934674">
-											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.0"/>
+										<Node score="0.9226932668329177">
+											<SimplePredicate field="double(day)" operator="lessOrEqual" value="7.5"/>
 										</Node>
 									</Node>
 									<Node score="0.9167579408543264">
 										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.0"/>
 									</Node>
 								</Node>
-								<Node score="0.9168514412416852">
-									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.0"/>
+								<Node score="0.9253012048192771">
+									<SimplePredicate field="double(day)" operator="lessOrEqual" value="7.5"/>
 								</Node>
 							</Node>
 							<Node score="0.9118683901292597">
 								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.0"/>
 							</Node>
 						</Node>
-						<Node score="0.8564742589703588">
+						<Node score="0.8560250391236307">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="16.5"/>
 							<Node score="0.8759590792838875">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="18.5"/>
@@ -1105,38 +1105,38 @@
 									<SimplePredicate field="double(day)" operator="lessOrEqual" value="11.5"/>
 								</Node>
 							</Node>
-							<Node score="0.8560250391236307">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="14.0"/>
-								<Node score="0.8433734939759037">
+							<Node score="0.8564742589703588">
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.0"/>
+								<Node score="0.8734525447042641">
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="19.5"/>
-									<Node score="0.8451816745655608">
-										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
-									</Node>
 								</Node>
-								<Node score="0.8605015673981191">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="11.5"/>
-									<Node score="0.8530805687203792">
-										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="20.5"/>
-									</Node>
-									<Node score="0.8642149929278642">
-										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
-									</Node>
+								<Node score="0.8551829268292683">
+									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="20.5"/>
 								</Node>
-								<Node score="0.8409090909090909">
+								<Node score="0.8699731903485255">
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
-									<Node score="0.8549848942598187">
-										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="20.5"/>
-									</Node>
 								</Node>
 							</Node>
-							<Node score="0.8734525447042641">
+							<Node score="0.8433734939759037">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="19.5"/>
+								<Node score="0.8451816745655608">
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
+								</Node>
 							</Node>
-							<Node score="0.8551829268292683">
-								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="20.5"/>
+							<Node score="0.8605015673981191">
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
+								<Node score="0.8530805687203792">
+									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="20.5"/>
+								</Node>
+								<Node score="0.8642149929278642">
+									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
+								</Node>
 							</Node>
-							<Node score="0.8699731903485255">
+							<Node score="0.8409090909090909">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
+								<Node score="0.8549848942598187">
+									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="20.5"/>
+								</Node>
 							</Node>
 						</Node>
 						<Node score="0.8745724059293044">
@@ -1155,7 +1155,7 @@
 							</Node>
 						</Node>
 					</Node>
-					<Node score="0.8068965517241379">
+					<Node score="0.8102466793168881">
 						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 						<Node score="0.8049713193116634">
 							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
@@ -1166,17 +1166,17 @@
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="12.5"/>
 							</Node>
 						</Node>
-						<Node score="0.887240356083086">
+						<Node score="0.8607594936708861">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="10.5"/>
 							<Node score="0.8036175710594315">
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="3.5"/>
 							</Node>
-							<Node score="0.8607594936708861">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="7.0"/>
+							<Node score="0.887240356083086">
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 							</Node>
 						</Node>
-						<Node score="0.8102466793168881">
-							<SimplePredicate field="double(day)" operator="lessOrEqual" value="14.0"/>
+						<Node score="0.8068965517241379">
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 						</Node>
 					</Node>
 					<Node score="0.8785046728971962">
@@ -1191,10 +1191,10 @@
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="7.5"/>
 							<Node score="0.8420038535645472">
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="23.5"/>
-								<Node score="0.874113475177305">
+								<Node score="0.8752436647173489">
 									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
-									<Node score="0.8752436647173489">
-										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.0"/>
+									<Node score="0.874113475177305">
+										<SimplePredicate field="double(day)" operator="lessOrEqual" value="20.5"/>
 									</Node>
 								</Node>
 							</Node>
@@ -1233,7 +1233,7 @@
 							</Node>
 						</Node>
 					</Node>
-					<Node score="0.8411053540587219">
+					<Node score="0.8178368121442126">
 						<SimplePredicate field="double(hour)" operator="lessOrEqual" value="13.5"/>
 						<Node score="0.8271604938271605">
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="11.5"/>
@@ -1283,7 +1283,7 @@
 									<Node score="0.8159722222222222">
 										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 										<Node score="0.8235294117647058">
-											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
+											<SimplePredicate field="double(day)" operator="lessOrEqual" value="24.5"/>
 										</Node>
 									</Node>
 									<Node score="0.8347386172006745">
@@ -1296,7 +1296,7 @@
 										<SimplePredicate field="double(day)" operator="lessOrEqual" value="21.5"/>
 									</Node>
 									<Node score="0.8367029548989113">
-										<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
+										<SimplePredicate field="double(day)" operator="lessOrEqual" value="24.5"/>
 									</Node>
 								</Node>
 							</Node>
@@ -1307,7 +1307,7 @@
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="10.5"/>
 							</Node>
 						</Node>
-						<Node score="0.8040665434380776">
+						<Node score="0.7927063339731286">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="25.5"/>
 							<Node score="0.822550831792976">
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.5"/>
@@ -1318,7 +1318,7 @@
 							<Node score="0.8146911519198664">
 								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 								<Node score="0.8321678321678322">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="23.5"/>
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
 									<Node score="0.8197278911564626">
 										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="12.5"/>
 									</Node>
@@ -1333,8 +1333,8 @@
 									<SimplePredicate field="double(day)" operator="lessOrEqual" value="22.0"/>
 								</Node>
 							</Node>
-							<Node score="0.7927063339731286">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="22.0"/>
+							<Node score="0.8040665434380776">
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 							</Node>
 						</Node>
 						<Node score="0.8071161048689138">
@@ -1349,8 +1349,8 @@
 								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.0"/>
 							</Node>
 						</Node>
-						<Node score="0.8178368121442126">
-							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.0"/>
+						<Node score="0.8411053540587219">
+							<SimplePredicate field="double(day)" operator="lessOrEqual" value="28.5"/>
 						</Node>
 					</Node>
 					<Node score="0.8955414012738854">
@@ -1371,10 +1371,10 @@
 											<Node score="0.8471849865951743">
 												<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
 											</Node>
-											<Node score="0.8611898016997167">
+											<Node score="0.8571428571428571">
 												<SimplePredicate field="double(day)" operator="lessOrEqual" value="24.5"/>
-												<Node score="0.8571428571428571">
-													<SimplePredicate field="double(day)" operator="lessOrEqual" value="21.5"/>
+												<Node score="0.8611898016997167">
+													<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.0"/>
 												</Node>
 											</Node>
 										</Node>
@@ -1406,7 +1406,7 @@
 									<Node score="0.8502994011976048">
 										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="15.5"/>
 										<Node score="0.8700906344410876">
-											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
+											<SimplePredicate field="double(day)" operator="lessOrEqual" value="24.5"/>
 										</Node>
 									</Node>
 									<Node score="0.841296928327645">
@@ -1457,10 +1457,10 @@
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="24.5"/>
 								<Node score="0.8763157894736842">
 									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
-									<Node score="0.8801128349788434">
+									<Node score="0.8832417582417582">
 										<SimplePredicate field="double(day)" operator="lessOrEqual" value="23.5"/>
-										<Node score="0.8832417582417582">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="20.5"/>
+										<Node score="0.8801128349788434">
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.0"/>
 										</Node>
 									</Node>
 								</Node>
@@ -1514,7 +1514,7 @@
 								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
 							</Node>
 							<Node score="0.8301282051282052">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="25.5"/>
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="2.5"/>
 								<Node score="0.8327702702702703">
 									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 								</Node>
@@ -1523,7 +1523,7 @@
 					</Node>
 					<Node score="0.8573825503355704">
 						<SimplePredicate field="double(day)" operator="lessOrEqual" value="30.5"/>
-						<Node score="0.8373702422145328">
+						<Node score="0.8349673202614379">
 							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="1.5"/>
 							<Node score="0.8489208633093526">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
@@ -1537,8 +1537,8 @@
 							<Node score="0.8413793103448276">
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="23.5"/>
 							</Node>
-							<Node score="0.8349673202614379">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="27.0"/>
+							<Node score="0.8373702422145328">
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="0.5"/>
 							</Node>
 						</Node>
 						<Node score="0.871517027863777">
@@ -1598,7 +1598,7 @@
 						<Node score="0.6570048309178744">
 							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
 							<Node score="0.7035398230088495">
-								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
+								<SimplePredicate field="double(day)" operator="lessOrEqual" value="6.5"/>
 							</Node>
 						</Node>
 						<Node score="0.8672566371681416">
@@ -1610,7 +1610,7 @@
 						<Node score="0.7871720116618076">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.5"/>
 							<Node score="0.8079800498753117">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="14.5"/>
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
 								<Node score="0.8155737704918032">
 									<SimplePredicate field="double(day)" operator="lessOrEqual" value="13.5"/>
 								</Node>
@@ -1639,7 +1639,7 @@
 				<Node score="0.8263157894736842">
 					<SimplePredicate field="double(day)" operator="lessOrEqual" value="10.5"/>
 					<Node score="0.8037735849056604">
-						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
+						<SimplePredicate field="double(day)" operator="lessOrEqual" value="7.5"/>
 						<Node score="0.7862407862407862">
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="8.5"/>
 							<Node score="0.8085585585585585">
@@ -1670,17 +1670,17 @@
 						<Node score="0.8684654300168634">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.0"/>
 							<Node score="0.8948905109489051">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="13.5"/>
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 							</Node>
 						</Node>
 						<Node score="0.8943781942078365">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="24.0"/>
 							<Node score="0.900593471810089">
-								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
+								<SimplePredicate field="double(day)" operator="lessOrEqual" value="20.5"/>
 							</Node>
 						</Node>
 						<Node score="0.8725925925925926">
-							<SimplePredicate field="double(day)" operator="lessOrEqual" value="27.5"/>
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 						</Node>
 					</Node>
 					<Node score="0.8595317725752508">
@@ -1690,7 +1690,7 @@
 						<SimplePredicate field="double(day)" operator="lessOrEqual" value="25.5"/>
 					</Node>
 				</Node>
-				<Node score="0.8664259927797834">
+				<Node score="0.8769430051813472">
 					<SimplePredicate field="double(day)" operator="lessOrEqual" value="21.5"/>
 					<Node score="0.8454258675078864">
 						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
@@ -1710,20 +1710,20 @@
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="9.5"/>
 						</Node>
 					</Node>
-					<Node score="0.910913140311804">
+					<Node score="0.8741355463347165">
 						<SimplePredicate field="double(hour)" operator="lessOrEqual" value="9.5"/>
-						<Node score="0.8741355463347165">
-							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
+						<Node score="0.910913140311804">
+							<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.0"/>
 						</Node>
 					</Node>
-					<Node score="0.8769430051813472">
-						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
+					<Node score="0.8664259927797834">
+						<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.0"/>
 					</Node>
 				</Node>
 				<Node score="0.9">
 					<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
 					<Node score="0.8285714285714286">
-						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
+						<SimplePredicate field="double(day)" operator="lessOrEqual" value="27.5"/>
 						<Node score="0.8608695652173913">
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="9.5"/>
 						</Node>
@@ -1848,7 +1848,7 @@
 							</Node>
 						</Node>
 					</Node>
-					<Node score="0.9007936507936508">
+					<Node score="0.9150943396226415">
 						<SimplePredicate field="double(day)" operator="lessOrEqual" value="21.5"/>
 						<Node score="0.8821138211382114">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="14.5"/>
@@ -1886,37 +1886,37 @@
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="11.0"/>
 							</Node>
 						</Node>
-						<Node score="0.9150943396226415">
-							<SimplePredicate field="double(day)" operator="lessOrEqual" value="18.0"/>
-							<Node score="0.9256474519632414">
+						<Node score="0.9007936507936508">
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="5.5"/>
+							<Node score="0.9103641456582633">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="14.5"/>
-								<Node score="0.9184925503943909">
+								<Node score="0.897136797454931">
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="11.5"/>
 								</Node>
-								<Node score="0.9337511190689346">
-									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="12.5"/>
-								</Node>
-								<Node score="0.9226618705035972">
+								<Node score="0.9040404040404041">
 									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="13.5"/>
+									<Node score="0.9056399132321041">
+										<SimplePredicate field="double(hour)" operator="lessOrEqual" value="12.5"/>
+									</Node>
 								</Node>
 							</Node>
-							<Node score="0.9116781157998037">
+							<Node score="0.8922594142259415">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="15.5"/>
 							</Node>
 						</Node>
-						<Node score="0.9103641456582633">
+						<Node score="0.9256474519632414">
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="14.5"/>
-							<Node score="0.897136797454931">
+							<Node score="0.9184925503943909">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="11.5"/>
 							</Node>
-							<Node score="0.9040404040404041">
+							<Node score="0.9337511190689346">
+								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="12.5"/>
+							</Node>
+							<Node score="0.9226618705035972">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="13.5"/>
-								<Node score="0.9056399132321041">
-									<SimplePredicate field="double(hour)" operator="lessOrEqual" value="12.5"/>
-								</Node>
 							</Node>
 						</Node>
-						<Node score="0.8922594142259415">
+						<Node score="0.9116781157998037">
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="15.5"/>
 						</Node>
 					</Node>
@@ -2071,7 +2071,7 @@
 							<Node score="0.8948356807511737">
 								<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.0"/>
 								<Node score="0.9084132055378061">
-									<SimplePredicate field="double(day)" operator="lessOrEqual" value="13.5"/>
+									<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 								</Node>
 							</Node>
 							<Node score="0.9146477580369436">
@@ -2090,14 +2090,14 @@
 									<Node score="0.8933601609657947">
 										<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.0"/>
 										<Node score="0.8918918918918919">
-											<SimplePredicate field="double(day)" operator="lessOrEqual" value="13.5"/>
+											<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 										</Node>
 									</Node>
 								</Node>
 							</Node>
 						</Node>
 					</Node>
-					<Node score="0.9250234301780693">
+					<Node score="0.9204655674102813">
 						<SimplePredicate field="double(day)" operator="lessOrEqual" value="20.5"/>
 						<Node score="0.9092159559834938">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="6.5"/>
@@ -2105,7 +2105,7 @@
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
 							</Node>
 						</Node>
-						<Node score="0.9161793372319688">
+						<Node score="0.9152348224513173">
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="13.5"/>
 							<Node score="0.9255222524977293">
 								<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
@@ -2113,27 +2113,27 @@
 									<SimplePredicate field="double(day)" operator="lessOrEqual" value="10.0"/>
 								</Node>
 							</Node>
-							<Node score="0.9152348224513173">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="10.0"/>
+							<Node score="0.9161793372319688">
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 							</Node>
 						</Node>
-						<Node score="0.9053819444444444">
+						<Node score="0.9127697841726619">
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
-							<Node score="0.9127697841726619">
-								<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.0"/>
+							<Node score="0.9053819444444444">
+								<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 							</Node>
 						</Node>
-						<Node score="0.9204655674102813">
-							<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.0"/>
+						<Node score="0.9250234301780693">
+							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 						</Node>
 					</Node>
-					<Node score="0.9226759339704604">
+					<Node score="0.9325210871602624">
 						<SimplePredicate field="double(day)" operator="lessOrEqual" value="27.5"/>
 						<Node score="0.9226775771925843">
 							<SimplePredicate field="double(hour)" operator="lessOrEqual" value="21.5"/>
 						</Node>
-						<Node score="0.9325210871602624">
-							<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
+						<Node score="0.9226759339704604">
+							<SimplePredicate field="double(day)" operator="lessOrEqual" value="24.0"/>
 						</Node>
 					</Node>
 					<Node score="0.9131205673758865">
@@ -2203,7 +2203,7 @@
 				<Node score="0.8352713178294574">
 					<SimplePredicate field="double(day)" operator="lessOrEqual" value="6.5"/>
 				</Node>
-				<Node score="0.8884711779448622">
+				<Node score="0.8848821081830791">
 					<SimplePredicate field="double(day)" operator="lessOrEqual" value="20.5"/>
 					<Node score="0.865819209039548">
 						<SimplePredicate field="double(day)" operator="lessOrEqual" value="13.5"/>
@@ -2211,8 +2211,8 @@
 							<SimplePredicate field="double(day)" operator="lessOrEqual" value="10.0"/>
 						</Node>
 					</Node>
-					<Node score="0.8848821081830791">
-						<SimplePredicate field="double(day)" operator="lessOrEqual" value="17.0"/>
+					<Node score="0.8884711779448622">
+						<SimplePredicate field="double(dayofweek)" operator="lessOrEqual" value="4.5"/>
 					</Node>
 				</Node>
 				<Node score="0.8477176559582063">
