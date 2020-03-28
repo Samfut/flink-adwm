@@ -62,9 +62,9 @@ public class StreamingJob {
     public static void main(String[] args) throws Exception {
 
         // set filePath
-        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/water.csv";
-        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/timelatency.csv";
-        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/disorder.csv";
+        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/periodic/water.csv";
+        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/periodic/timelatency.csv";
+        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/periodic/disorder.csv";
         URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201810/CB20181001.csv");
         String bikeDataPath = bikeDataUrl.getFile();
 
@@ -105,10 +105,10 @@ public class StreamingJob {
         // 延迟等待参数
         long lantency = 2000;
         // 窗口大小参数
-        long windowSize = 60;
+        long windowSize = 120;
 
 //        BikeSource bs =  new BikeSource(isheuristic, lantency);
-        AdBikeSource bs =  new AdBikeSource(0.3, 60, 10, 4700);
+        AdBikeSource bs =  new AdBikeSource(0.3, windowSize, 10, 4700);
 
         DataStream<BikeRide> bikerides = env.addSource(bs);
 
