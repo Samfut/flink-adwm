@@ -71,7 +71,7 @@ public class DiDiStrategy {
         //  如果监控出来迟到率比较低的时候
         if(lateRate <= threshold) {
             // 当前乱序率较低，那么继续以较低的latency
-            if(disorder<=threshold+0.2) {
+            if(disorder<=threshold) {
                 latency = disorder * Math.min(latency, maxDelay);;
 //                latency = 0;
             }

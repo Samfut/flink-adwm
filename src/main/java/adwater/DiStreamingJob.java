@@ -109,13 +109,16 @@ public class DiStreamingJob {
         // init datasource
         boolean isheuristic = true;
         // 延迟等待参数
-        long lantency = 1000 * 15 * 8;
+        long lantency = 1000 * 60 * 4;
         // 窗口大小参数
-        long windowSize = 60*1;
+        long windowSize = 60*4;
         // TODO 自适应的参数
         double threshold = 0.4;
         int monitorPer = 2;
-        long maxDelayThreshold = 1000 * 15 * 12;
+        // TODO 比较性能指标参数的时候
+        long maxDelayThreshold = 1000 * 60 * 4;
+        // TODO 展示优化结果图的时候的参数
+//        long maxDelayThreshold = 1000 * 15 * 12;
 
         // TODO 切换数据源类型分为周期性水印和启发式水印
 //        BikeSource bs =  new BikeSource(isheuristic, lantency);
