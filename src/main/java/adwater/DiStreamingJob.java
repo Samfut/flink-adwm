@@ -62,13 +62,13 @@ public class DiStreamingJob {
     public static void main(String[] args) throws Exception {
 
         // TODO 设置监控性能的结果输出路径 分为2种 一种是周期性水印的监控结果 一种是自适应水印的监控结果
-//        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/water.csv";
-//        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/timelatency.csv";
-//        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/disorder.csv";
+        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/water.csv";
+        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/timelatency.csv";
+        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/disorder.csv";
 
-        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/water.csv";
-        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/timelatency.csv";
-        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/disorder.csv";
+//        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/water.csv";
+//        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/timelatency.csv";
+//        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/disorder.csv";
 
         // 加载数据
         URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201710/DIDI20171004.csv");
