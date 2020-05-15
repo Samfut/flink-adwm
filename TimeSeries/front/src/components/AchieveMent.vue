@@ -13,88 +13,110 @@
         <svg class="ali-icon" aria-hidden="true" style="margin-right: 10px">
           <use xlink:href="#ali-icon-ziyuan"></use>
         </svg>
-        <span slot="title">首页</span>
+        <span slot="title">Monitor</span>
       </el-menu-item>
-      <el-menu-item index="paper">
-        <svg class="ali-icon" aria-hidden="true" style="margin-right: 10px">
-          <use xlink:href="#ali-icon-folder"></use>
-        </svg>
-        <span slot="title">论文</span>
-      </el-menu-item>
-      <el-menu-item index="edit" v-if="showEdit">
-        <svg class="ali-icon" aria-hidden="true" style="margin-right: 10px">
-          <use xlink:href="#ali-icon-edit"></use>
-        </svg>
-        <span slot="title">编辑</span>
-      </el-menu-item>
-      <el-menu-item index="login" style="float: right" @click="showLogin = true" v-if="!showEdit" >
-        <svg class="ali-icon" aria-hidden="true" style="margin-right: 2px; ">
-          <use xlink:href="#ali-icon-paper-airplane"></use>
-        </svg>
-        <span slot="title">登录</span>
-      </el-menu-item>
-      <el-menu-item index="logout" style="float: right" @click="logout" v-if="showEdit">
-        <svg class="ali-icon" aria-hidden="true" style="margin-right: 10px;">
-          <use xlink:href="#ali-icon-tuichu"></use>
-        </svg>
-        <span slot="title">注销</span>
-      </el-menu-item>
-      <el-dialog
-        title="登录"
-        :visible.sync="showLogin"
-        width="22%"
-        center>
-         <el-input v-model="username" style="margin: 5% 0">
-          <template slot="prepend">
-            <svg class="ali-icon" aria-hidden="true">
-              <use xlink:href="#ali-icon-yonghu"></use>
-            </svg>
-            账号
-          </template>
-        </el-input>
-        <el-input v-model="password" type="password">
-          <template slot="prepend" >
-            <svg class="ali-icon" aria-hidden="true">
-              <use xlink:href="#ali-icon-key"></use>
-            </svg>
-            密码
-          </template>
-        </el-input>
-        <span slot="footer" class="dialog-footer" style="margin-bottom: 5%">
-          <el-button type="primary" @click="Login">登录</el-button>
-          <el-button @click="cancelLogin">取 消</el-button>
-        </span>
-        <el-alert style="margin-top: 5%" type="error" v-show="showAlert">{{message}}</el-alert>
-      </el-dialog>
     </el-menu>
   </el-header>
   <el-main style="height: 100%; border: 1px solid #eee">
-    <router-view></router-view>
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-card>
+              <div id="disorder" style="width: 650px;height: 300px"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card>
+              <div id="window" style="width: 650px;height: 300px"></div>
+          </el-card>
+        </el-col>
+      </el-row>
+    <br>
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-card>
+              <div id="wait" style="width: 650px;height: 300px"></div>
+          </el-card>
+        </el-col>
+        <el-col :span="12">
+          <el-card>
+              <div slot="header" style="height: 10px;">
+                <center><span><strong>Evaluation Metrics for Predict Model</strong></span></center>
+              </div>
+            <el-table
+            :data="tableData"
+            border
+            shadow="always"
+            height="264"
+            style="width: 100%; margin-top: -10px">
+            <el-table-column prop="date" label="time window" width="180">
+                <template slot-scope="scope">
+                  <i class="el-icon-time"></i>
+                  <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="RMES"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="address"
+              label="MAE">
+            </el-table-column>
+            <el-table-column
+              prop="r"
+              label="R-squared">
+            </el-table-column>
+          </el-table>
+          </el-card>
+
+        </el-col>
+      </el-row>
   </el-main>
   <el-footer>
-    <div class="copyright"><p>© 2019 <a href="http://github.com/yangsoon">yangsoon</a></p></div>
+<!--    <div class="copyright"><p>© 2019 <a href="http://github.com/yangsoon">yangsoon</a></p></div>-->
   </el-footer>
 </el-container>
 </template>
 
 <script>
-    import axios from "axios"
+    import op from '../option'
     export default {
         name: "AchieveMent",
         data(){
           return{
-            showLogin: false,
-            showAlert: false,
-            showEdit: false,
-            username: "",
-            password: "",
-            message: ""
+            tableData: [{
+              date: '2018-07-30',
+              name: '0.062314',
+              address: '0.027652',
+              r: '0.867158'
+            }, {
+              date: '2018-07-29',
+              name: '0.048207',
+              address: '0.021740',
+              r: '0.879027'
+            }, {
+              date: '2018-07-28',
+              name: '0.07449',
+              address: '0.035753',
+              r: '0.849027'
+            }, {
+              date: '2018-07-27',
+              name: '0.074491',
+              address: '0.034202',
+              r: '0.905348'
+            }, {
+              date: '2018-07-26',
+              name: '0.041274',
+              address: '0.014607',
+              r: '0.962902'
+            }]
           }
         },
         created(){
-          if(localStorage.getItem("labac")){
-              this.showEdit = true;
-          }
+        },
+        mounted() {
+          this.initDelay();
         },
         computed:{
           baseUrl(){
@@ -110,62 +132,14 @@
           }
         },
         methods:{
-          Login(){
-            if(this.username ==='' || this.password === ''){
-              this.message = "请填写完整用户名和密码";
-              this.showAlert = true;
-              setTimeout(()=>{
-                this.message = "";
-                this.showAlert = false
-              }, 1000);
-            } else{
-              axios.get(this.baseUrl+"/login", {
-                params: {
-                  username: this.username,
-                  password: this.password
-                }
-              }).then(res => {
-                this.message = "";
-                this.showAlert = false;
-                if(res.data.code === 1){
-                  this.showEdit = true;
-                  localStorage.setItem("labac", res.data.token);
-                  this.showLogin = false;
-                  this.$router.push({name: 'edit'});
-                  this.$notify({
-                    title: "成功",
-                    message: "欢迎管理员登录",
-                    type: "success"
-                  })
-                } else {
-                  this.message = "用户名或密码错误";
-                  this.showAlert = true;
-                }
-              })
-            }
-
+          initDelay() {
+            let delayChart = this.$echarts.init(document.getElementById("disorder"));
+            delayChart.setOption(op.disorder);
+            let delayChart1 = this.$echarts.init(document.getElementById("window"));
+            delayChart1.setOption(op.window);
+            let delayChart2 = this.$echarts.init(document.getElementById("wait"));
+            delayChart2.setOption(op.wait);
           },
-          cancelLogin(){
-            this.showLogin = false
-          },
-          logout(){
-            localStorage.removeItem("labac");
-            this.$router.push({name: 'paper'});
-            this.showEdit = false;
-            this.$notify({
-              title: "注销成功",
-              message: "再见👋",
-              type: "success"
-            })
-          },
-          handlerRouter(key, keyPath){
-            if(key==='login'||key==='logout'){
-              return
-            }
-            this.$router.push({
-              name: key
-            })
-          }
         }
     }
 </script>
@@ -187,5 +161,26 @@ a {
   fill: currentColor;
   overflow: hidden;
 }
+
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
 
 </style>
