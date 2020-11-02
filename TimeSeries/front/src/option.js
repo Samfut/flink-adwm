@@ -58,7 +58,7 @@ let ops = {
             {
                 show: true,
                 realtime: true,
-                start: 80,
+                start: 60,
                 end: 100,
                 // xAxisIndex: [0, 1]
             }

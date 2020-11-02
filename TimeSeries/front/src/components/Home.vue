@@ -6,8 +6,6 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      @select="handlerRouter"
-      :default-active="activeMenu"
     >
       <el-menu-item index="home">
         <svg class="ali-icon" aria-hidden="true" style="margin-right: 10px">
@@ -19,8 +17,11 @@
   </el-header>
   <el-main style="height: 100%; border: 1px solid #eee">
     <el-container>
-      <el-aside width="200px" style="height: 100%; margin-right: 1%">
-        <el-menu>
+      <el-aside width="200px" style="height: 100%;">
+        <el-menu
+            @select="handlerRouter"
+            default-active="watermark"
+        >
           <el-menu-item index="watermark">
             <template slot="title">
               <span style="margin-right: 20px">
@@ -38,14 +39,15 @@
                     <use xlink:href="#ali-icon-shijian"></use>
                 </svg>
               </span>
-              自适应水位线
+              切片树滑动窗口
             </template>
           </el-menu-item>
         </el-menu>
       </el-aside>
-      <router-view></router-view>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
-
   </el-main>
   <el-footer>
   </el-footer>
@@ -55,6 +57,13 @@
 <script>
     export default {
         name: "Home",
+        methods:{
+          handlerRouter(key, keyPath) {
+            this.$router.push({
+              name: key
+            })
+          }
+        }
     }
 </script>
 
