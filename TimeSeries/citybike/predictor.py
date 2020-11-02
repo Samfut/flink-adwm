@@ -141,7 +141,7 @@ class XGBoostPredictor:
 
     def train_model(self, train_x, train_y, eval_set):
         '''
-        xgboost 需要获取测试集的数据 eval_set = [(X_test, y_test)]
+        xgboost 需要获取测试集的数据 eval_set = [(X_test, Y_test)]
         '''
         reg = xgb.XGBRegressor(n_estimators=1000)
         reg.fit(train_x, train_y, eval_set=eval_set, early_stopping_rounds=50, verbose=True)

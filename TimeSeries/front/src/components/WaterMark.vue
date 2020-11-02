@@ -13,7 +13,7 @@
                 v-model="dataSetValue"
                 placeholder="请选择数据集"
                 :options="dataSetOption"
-                @change="handleChange"></el-cascader>
+            ></el-cascader>
           </span>
           <span>
             预测模型:
@@ -30,8 +30,8 @@
             </el-select>
           </span>
           <span style="margin-left: 3%">
-            <el-button type="primary">开始发放水位线</el-button>
-            <el-button type="info">停止发放</el-button>
+            <el-button type="primary" @click="getDataSet">开始发放水位线</el-button>
+            <el-button type="info" @click="stopDataSet">停止发放</el-button>
           </span>
         </el-card>
       </el-col>
@@ -69,6 +69,7 @@ import op from '../option'
 import src from '../data'
 import com_disorder from '../disorder'
 import echarts from 'echarts'
+import axios from "axios"
 export default {
   name: "WaterMark",
   data(){
@@ -76,7 +77,8 @@ export default {
       dataSetValue: [],
       modelValue: [],
       dataSetOption: src.SelectData,
-      SelectModel: src.SelectModel
+      SelectModel: src.SelectModel,
+      baseUrl: "http://0.0.0.0:5000"
     }
   },
   created(){
@@ -87,9 +89,20 @@ export default {
   computed:{
   },
   methods:{
-    handleChange(value) {
-      // eslint-disable-next-line no-console
-      console.log(value)
+    getDataSet() {
+      let params = {
+        dataset: this.dataSetValue[0] + this.dataSetValue[1],
+        model: this.modelValue
+      }
+      axios.get(this.baseUrl+"/api/watermark/predict", {params:params}).then(res=>{
+        // eslint-disable-next-line no-console
+        src.timeData = res.data.xtime;
+        com_disorder.predict = res.data.ypredict;
+        com_disorder.real = res.data.yreal;
+      })
+    },
+    stopDataSet(){
+      window.location.reload(true);
     },
     updateDisOrder() {
       let i = 0;
@@ -97,6 +110,9 @@ export default {
       let ypredict = [];
       let yreal = [];
       function update() {
+        if(i>src.timeData.length) {
+          return
+        }
         xtime.push(src.timeData[i]);
         ypredict.push(com_disorder.predict[i]);
         yreal.push(com_disorder.real[i]);
@@ -110,7 +126,7 @@ export default {
       return update;
     },
     initDelay() {
-      setInterval(this.updateDisOrder(), 2000);
+      setInterval(this.updateDisOrder().bind(this), 500);
       let delayChart1 = this.$echarts.init(document.getElementById("window"));
       delayChart1.setOption(op.window);
       let delayChart2 = this.$echarts.init(document.getElementById("wait"));

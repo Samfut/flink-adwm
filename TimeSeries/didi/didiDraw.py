@@ -56,7 +56,8 @@ class DrawLSTM:
             'real': self.test_y.flatten()
         }
         lstm_df = pd.DataFrame(merge_data, index=date_index)
-
+        return lstm_df
+        
         sns.set(style="whitegrid")
         sns.set_context(rc={"lines.linewidth": 2})
 
@@ -107,6 +108,7 @@ class DrawXgboost:
             'real': self.test_y
         }
         xgb_df = pd.DataFrame(merge_data, index=date_index)
+        return xgb_df
 
         sns.set(style="whitegrid")
         sns.set_context(rc={"lines.linewidth": 2})
