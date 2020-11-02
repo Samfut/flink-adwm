@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <AchieveMent></AchieveMent>
+    <Home></Home>
   </div>
 </template>
 
 <script>
-import AchieveMent from "./components/AchieveMent"
+import Home from "./components/Home"
 export default {
   name: 'app',
   components: {
-    AchieveMent
+    Home
   }
 }
 </script>
