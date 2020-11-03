@@ -1,6 +1,9 @@
 let src = {
     timeData : [],
     waitTime: [],
+    windowTime: [],
+    ywindow: [],
+    ywincom: [],
     ywait: [],
     ycom: [],
     SelectData: [{

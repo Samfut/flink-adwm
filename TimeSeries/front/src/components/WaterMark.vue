@@ -106,6 +106,12 @@ export default {
         src.ywait = res.data.ywait;
         src.ycom = res.data.ycom;
       })
+      axios.get(this.baseUrl+"/api/window/wait", {params:params}).then(res=>{
+        // eslint-disable-next-line no-console
+        src.windowTime = res.data.xtime;
+        src.ywindow = res.data.ywait;
+        src.ywincom = res.data.ycom;
+      })
     },
     stopDataSet(){
       window.location.reload(true);
@@ -154,13 +160,31 @@ export default {
       return update;
     },
 
+    updateWindow() {
+      let i = 0;
+      let xtime = [];
+      let ywait = [];
+      let ycom = [];
+      function update() {
+        if(i > src.windowTime.length) {
+          return;
+        }
+        xtime.push(src.windowTime[i]);
+        ywait.push(src.ywindow[i]);
+        ycom.push(src.ywincom[i]);
+        let Chart = echarts.init(document.getElementById("window"));
+        op.window.xAxis[0].data = xtime;
+        op.window.series[0].data = ywait;
+        op.window.series[1].data = ycom;
+        Chart.setOption(op.window);
+        i++;
+      }
+      return update;
+    },
     initDelay() {
       setInterval(this.updateDisOrder(), 1000);
-      let delayChart1 = this.$echarts.init(document.getElementById("window"));
-      delayChart1.setOption(op.window);
-      // let delayChart2 = this.$echarts.init(document.getElementById("wait"));
-      // delayChart2.setOption(op.wait);
-      setInterval(this.updateWait(), 100);
+      setInterval(this.updateWindow(), 500);
+      setInterval(this.updateWait(), 500);
     },
   }
 }

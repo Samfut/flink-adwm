@@ -138,7 +138,7 @@ let ops = {
             {
                 show: true,
                 realtime: true,
-                start: 80,
+                start: 40,
                 end: 100,
                 // xAxisIndex: [0, 1]
             }
@@ -160,14 +160,7 @@ let ops = {
             {
                 name: 'time(ms)',
                 type: 'value',
-                max: 3000
             },
-            {
-                name: 'ratio',
-                max: 1,
-                min: 0,
-                type: 'value'
-            }
         ],
         series: [
             {
@@ -183,8 +176,6 @@ let ops = {
             {
                 name: 'data lateness ratio',
                 type: 'line',
-                xAxisIndex: 0,
-                yAxisIndex: 1,
                 symbolSize: 8,
                 hoverAnimation: false,
                 data: lateness,
@@ -227,7 +218,7 @@ let ops = {
             {
                 show: true,
                 realtime: true,
-                start: 50,
+                start: 40,
                 end: 100,
                 // xAxisIndex: [0, 1]
             }
