@@ -1,5 +1,8 @@
 let src = {
     timeData : [],
+    waitTime: [],
+    ywait: [],
+    ycom: [],
     SelectData: [{
         value: 'CB',
         label: '纽约市共享单车数据集',

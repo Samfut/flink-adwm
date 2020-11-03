@@ -15,5 +15,18 @@ def handler_predict():
     res = dict(xtime=csvfile.index.tolist(), ypredict=csvfile['predict'].tolist(), yreal=csvfile['real'].tolist())
     return json.dumps(res)
 
+@app.route('/api/watermark/wait')
+def handler_wait():
+    params = request.args.to_dict()
+    dataset = params['dataset']
+    t = dataset.split('2')[0]
+    if t == 'CB':
+        csvfile = pd.read_csv('./data/WaitTime/CB201810.csv', index_col=0)
+    else:
+        csvfile = pd.read_csv('./data/WaitTime/DIDI201710.csv', index_col=0)
+    csvfile = csvfile.fillna(0)
+    res = dict(xtime=csvfile.index.tolist(), ywait=csvfile['adwater'].tolist(), ycom=csvfile['period(1000ms)'].tolist())
+    return json.dumps(res)
+    
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

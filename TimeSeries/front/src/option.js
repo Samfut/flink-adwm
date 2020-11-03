@@ -3,13 +3,7 @@ import com_disorder from './disorder'
 let timeData = src.timeData.map(function (str) {
     return str.replace('2009/', '');
 });
-let lateness = com_disorder.real.map(function (dis) {
-    if(dis<0.3) {
-        return dis;
-    } else {
-        return 0.3+(Math.random()>0.1?-1:1)*(dis-0.3)*Math.random()*0.5;
-    }
-});
+let lateness = [];
 let win_wait = com_disorder.predict.map(function (dis) {
     if(dis<0.3) {
         return dis*3500;
@@ -17,9 +11,7 @@ let win_wait = com_disorder.predict.map(function (dis) {
         return  1500+(dis-0.3)*3500;
     }
 });
-let wm_wait = com_disorder.predict.map(function (dis) {
-    return dis*2000 + (Math.random()>0.5? 0.1:0)*2000;
-});
+let wm_wait = [];
 
 let throughput = com_disorder.predict.map(function (dis) {
     return dis*100000 + (Math.random()>0.5? 0.1:0)*2000;
@@ -215,10 +207,9 @@ let ops = {
             }
         },
         legend: {
-            data: ['waiting time', 'data lateness ratio'],
+            data: ['adwater waiting time', 'period waiting time'],
             left: '2%',
-            top: -5,
-            orient: "vertical"
+            orient: "horizontal"
         },
         toolbox: {
             feature: {
@@ -236,7 +227,7 @@ let ops = {
             {
                 show: true,
                 realtime: true,
-                start: 80,
+                start: 50,
                 end: 100,
                 // xAxisIndex: [0, 1]
             }
@@ -258,17 +249,12 @@ let ops = {
             {
                 name: 'time(ms)',
                 type: 'value',
-                max: 2000
+                // max: 2000
             },
-            {
-                name: 'ratio',
-                max: 1,
-                type: 'value'
-            }
         ],
         series: [
             {
-                name: 'waiting time',
+                name: 'adwater waiting time',
                 type: 'bar',
                 symbolSize: 8,
                 hoverAnimation: false,
@@ -278,10 +264,10 @@ let ops = {
                 }
             },
             {
-                name: 'data lateness ratio',
+                name: 'period waiting time',
                 type: 'line',
                 xAxisIndex: 0,
-                yAxisIndex: 1,
+                yAxisIndex: 0,
                 symbolSize: 8,
                 hoverAnimation: false,
                 data: lateness,

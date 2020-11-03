@@ -100,6 +100,12 @@ export default {
         com_disorder.predict = res.data.ypredict;
         com_disorder.real = res.data.yreal;
       })
+      axios.get(this.baseUrl+"/api/watermark/wait", {params:params}).then(res=>{
+        // eslint-disable-next-line no-console
+        src.waitTime = res.data.xtime;
+        src.ywait = res.data.ywait;
+        src.ycom = res.data.ycom;
+      })
     },
     stopDataSet(){
       window.location.reload(true);
@@ -125,12 +131,36 @@ export default {
       }
       return update;
     },
+
+    updateWait() {
+      let i = 0;
+      let xtime = [];
+      let ywait = [];
+      let ycom = [];
+      function update() {
+          if(i > src.waitTime.length) {
+            return;
+          }
+          xtime.push(src.waitTime[i]);
+          ywait.push(src.ywait[i]);
+          ycom.push(src.ycom[i]);
+          let WaitChart = echarts.init(document.getElementById("wait"));
+          op.wait.xAxis[0].data = xtime;
+          op.wait.series[0].data = ywait;
+          op.wait.series[1].data = ycom;
+          WaitChart.setOption(op.wait);
+          i++;
+      }
+      return update;
+    },
+
     initDelay() {
-      setInterval(this.updateDisOrder().bind(this), 500);
+      setInterval(this.updateDisOrder(), 1000);
       let delayChart1 = this.$echarts.init(document.getElementById("window"));
       delayChart1.setOption(op.window);
-      let delayChart2 = this.$echarts.init(document.getElementById("wait"));
-      delayChart2.setOption(op.wait);
+      // let delayChart2 = this.$echarts.init(document.getElementById("wait"));
+      // delayChart2.setOption(op.wait);
+      setInterval(this.updateWait(), 100);
     },
   }
 }
