@@ -37,25 +37,34 @@
       </el-col>
     </el-row>
     <el-divider></el-divider>
-    <el-row :gutter="10">
+    <el-row>
       <el-col :span="22" :offset="1">
-        <el-card>
+        <el-card v-loading="isloading"
+                 element-loading-text="等待数据加载中"
+                 element-loading-spinner="el-icon-loading"
+        >
           <div id="disorder" style="width: 1000px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>
       <br>
-    <el-row :gutter="10">
+    <el-row>
       <el-col :span="22" :offset="1">
-        <el-card>
+        <el-card v-loading="isloading"
+                 element-loading-text="等待数据加载中"
+                 element-loading-spinner="el-icon-loading"
+        >
           <div id="window" style="width: 1000px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>
     <br>
-    <el-row :gutter="10">
+    <el-row>
       <el-col :span="22" :offset="1">
-        <el-card>
+        <el-card v-loading="isloading"
+                 element-loading-text="等待数据加载中"
+                 element-loading-spinner="el-icon-loading"
+        >
           <div id="wait" style="width: 1000px;height: 300px"></div>
         </el-card>
       </el-col>
@@ -78,7 +87,8 @@ export default {
       modelValue: [],
       dataSetOption: src.SelectData,
       SelectModel: src.SelectModel,
-      baseUrl: "http://0.0.0.0:5000"
+      baseUrl: "http://0.0.0.0:5000",
+      isloading: true
     }
   },
   created(){
@@ -96,6 +106,7 @@ export default {
       }
       axios.get(this.baseUrl+"/api/watermark/predict", {params:params}).then(res=>{
         // eslint-disable-next-line no-console
+        this.isloading = false;
         src.timeData = res.data.xtime;
         com_disorder.predict = res.data.ypredict;
         com_disorder.real = res.data.yreal;

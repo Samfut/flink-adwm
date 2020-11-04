@@ -1,22 +1,3 @@
-import src from './data'
-import com_disorder from './disorder'
-let timeData = src.timeData.map(function (str) {
-    return str.replace('2009/', '');
-});
-let lateness = [];
-let win_wait = com_disorder.predict.map(function (dis) {
-    if(dis<0.3) {
-        return dis*3500;
-    } else {
-        return  1500+(dis-0.3)*3500;
-    }
-});
-let wm_wait = [];
-
-let throughput = com_disorder.predict.map(function (dis) {
-    return dis*100000 + (Math.random()>0.5? 0.1:0)*2000;
-});
-
 let ops = {
     disorder : {
         title: {
@@ -65,7 +46,7 @@ let ops = {
                 type: 'category',
                 boundaryGap: false,
                 axisLine: {onZero: true},
-                data: timeData
+                data: []
             }
         ],
         yAxis: [
@@ -82,7 +63,7 @@ let ops = {
                 type: 'line',
                 symbolSize: 8,
                 hoverAnimation: false,
-                data: com_disorder.predict,
+                data: [],
                 itemStyle: {
                     normal:{
                         lineStyle: {
@@ -97,7 +78,7 @@ let ops = {
                 type: 'line',
                 symbolSize: 8,
                 hoverAnimation: false,
-                data: com_disorder.real,
+                data: [],
                 itemStyle: {
                     color: "#004e66"
                 }
@@ -117,9 +98,8 @@ let ops = {
             }
         },
         legend: {
-            data: ['window waiting time', 'data lateness ratio'],
-            left: '2%',
-            top: -5 ,
+            data: ['adwater window waiting time', 'period window waiting time'],
+            left: '8%',
             orient: "vertical"
         },
         toolbox: {
@@ -153,7 +133,7 @@ let ops = {
                 type: 'category',
                 boundaryGap: false,
                 axisLine: {onZero: true},
-                data: timeData
+                data: []
             }
         ],
         yAxis: [
@@ -164,21 +144,21 @@ let ops = {
         ],
         series: [
             {
-                name: 'window waiting time',
+                name: 'adwater window waiting time',
                 type: 'bar',
                 symbolSize: 8,
                 hoverAnimation: false,
-                data: win_wait,
+                data: [],
                 itemStyle: {
                     color: "#E53A40"
                 }
             },
             {
-                name: 'data lateness ratio',
+                name: 'period window waiting time',
                 type: 'line',
                 symbolSize: 8,
                 hoverAnimation: false,
-                data: lateness,
+                data: [],
                 itemStyle: {
                     color: "#004e66",
                 }
@@ -233,7 +213,7 @@ let ops = {
                 type: 'category',
                 boundaryGap: false,
                 axisLine: {onZero: true},
-                data: timeData
+                data: []
             }
         ],
         yAxis: [
@@ -249,7 +229,7 @@ let ops = {
                 type: 'bar',
                 symbolSize: 8,
                 hoverAnimation: false,
-                data: wm_wait,
+                data: [],
                 itemStyle: {
                     color: "#2b90d9"
                 }
@@ -261,80 +241,17 @@ let ops = {
                 yAxisIndex: 0,
                 symbolSize: 8,
                 hoverAnimation: false,
-                data: lateness,
+                data: [],
                 itemStyle: {
                     color: "#E53A40"
                 }
             }
         ]
     },
-    mem:{
+    cpu: {
         title: {
-            text: 'System Memory Status',
-            // subtext: 'compare predicted and real values',
-            left: 'center'
-        },
-        tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b}: {c}MB ({d}%)'
-        },
-        legend: {
-            orient: 'horizontal',
-            left: 0,
-            bottom: 0,
-            data: ['used', 'free', 'cache', 'wired']
-        },
-        series: [
-            {
-                name: '内存占用',
-                type: 'pie',
-                radius: ['50%', '70%'],
-                avoidLabelOverlap: false,
-                label: {
-                    show: false,
-                    position: 'center'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: '30',
-                        fontWeight: 'bold'
-                    }
-                },
-                labelLine: {
-                    show: true
-                },
-                data: [
-                    {value: 335, name: 'used'},
-                    {value: 310, name: 'free'},
-                    {value: 234, name: 'cache'},
-                    {value: 135, name: 'wired'},
-                ]
-            }
-        ]
-    },
-    cpu:{
-        title: {
-            text: 'System CPU Status',
+            text: 'CPU Stat',
             subtext: '',
-            left: 'center'
-        },
-        tooltip: {
-            formatter: '{a} <br/>{b} : {c}%'
-        },
-        series: [
-            {
-                name: '业务指标',
-                type: 'gauge',
-                detail: {formatter: '{value}%'},
-                data: [{value: 33, name: 'CPU'}]
-            }
-        ]
-    },
-    th : {
-        title: {
-            text: 'Throughput',
-            // subtext: 'compare predicted and real values',
             left: 'center'
         },
         tooltip: {
@@ -344,8 +261,18 @@ let ops = {
             }
         },
         legend: {
-            data: ['predict'],
-            left: 10
+            data: ['native', 'slice', 'tree', 'stree'],
+            left: '2%',
+            orient: "horizontal"
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                restore: {},
+                saveAsImage: {}
+            }
         },
         axisPointer: {
             link: {xAxisIndex: 'all'}
@@ -354,7 +281,7 @@ let ops = {
             {
                 show: true,
                 realtime: true,
-                start: 80,
+                start: 40,
                 end: 100,
                 // xAxisIndex: [0, 1]
             }
@@ -369,35 +296,170 @@ let ops = {
                 type: 'category',
                 boundaryGap: false,
                 axisLine: {onZero: true},
-                data: timeData
+                data: []
             }
         ],
         yAxis: [
             {
-                name: 'Throughput',
+                name: 'time',
                 type: 'value',
-                min:0
-            }
+                // max: 2000
+            },
         ],
         series: [
             {
-                name: 'predict',
+                name: 'native',
                 type: 'line',
                 symbolSize: 8,
                 hoverAnimation: false,
-                data: throughput,
+                data: [],
                 itemStyle: {
-                    normal:{
-                        lineStyle: {
-                            width: 2.5,
-                        }
-                    }
-
-                },
-                areaStyle: {
-                    color: "rgba(195, 47, 47, 1)"
+                    color: "#2b90d9"
                 }
+            },
+            {
+                name: 'slice',
+                type: 'line',
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                symbolSize: 8,
+                hoverAnimation: false,
+                data: [],
+                itemStyle: {
+                    color: "#E53A40"
+                }
+            },
+            {
+                name: 'tree',
+                type: 'line',
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                symbolSize: 8,
+                hoverAnimation: false,
+                data: [],
+                itemStyle: {
+                    color: "#000000"
+                }
+            },
+            {
+                name: 'stree',
+                type: 'line',
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                symbolSize: 8,
+                hoverAnimation: false,
+                data: [],
+                itemStyle: {
+                    color: "#499a56"
+                }
+            },
+        ]
+    },
+    mem:{
+        title: {
+            text: 'Mem Stat',
+            subtext: '',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                animation: false
             }
+        },
+        legend: {
+            data: ['native', 'slice', 'tree', 'stree'],
+            left: '2%',
+            orient: "horizontal"
+        },
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'}
+        },
+        dataZoom: [
+            {
+                show: true,
+                realtime: true,
+                start: 40,
+                end: 100,
+                // xAxisIndex: [0, 1]
+            }
+        ],
+        grid: {
+            left: 50,
+            right: 50,
+            height: '60%'
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                axisLine: {onZero: true},
+                data: []
+            }
+        ],
+        yAxis: [
+            {
+                name: 'time',
+                type: 'value',
+                // max: 2000
+            },
+        ],
+        series: [
+            {
+                name: 'native',
+                type: 'line',
+                symbolSize: 8,
+                hoverAnimation: false,
+                data: [],
+                itemStyle: {
+                    color: "#2b90d9"
+                }
+            },
+            {
+                name: 'slice',
+                type: 'line',
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                symbolSize: 8,
+                hoverAnimation: false,
+                data: [],
+                itemStyle: {
+                    color: "#E53A40"
+                }
+            },
+            {
+                name: 'tree',
+                type: 'line',
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                symbolSize: 8,
+                hoverAnimation: false,
+                data: [],
+                itemStyle: {
+                    color: "#000000"
+                }
+            },
+            {
+                name: 'stree',
+                type: 'line',
+                xAxisIndex: 0,
+                yAxisIndex: 0,
+                symbolSize: 8,
+                hoverAnimation: false,
+                data: [],
+                itemStyle: {
+                    color: "#499a56"
+                }
+            },
         ]
     },
 };

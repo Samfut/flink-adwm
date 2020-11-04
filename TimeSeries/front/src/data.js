@@ -54,6 +54,37 @@ let src = {
     },{
         value: 'XGboost',
         label: '机器学习预测模型-XGboost'
+    }],
+    SelectFunc: [{
+        value: 'Count',
+        label: 'Count'
+    },{
+        value: 'Sum',
+        label: 'Sum'
+    },{
+        value: 'Max',
+        label: 'Max'
+    },{
+        value: 'Min',
+        label: 'Min'
+    },{
+        value: 'MaxCount',
+        label: 'MaxCount'
+    },{
+        value: 'MinCount',
+        label: 'MinCount'
+    },{
+        value: 'ArithmeticMean',
+        label: 'ArithmeticMean'
+    },{
+        value: 'GeometricMean',
+        label: 'GeometricMean'
+    },{
+        value: 'SampleStdDev',
+        label: 'SampleStdDev'
+    },{
+        value: 'PopulationStdDev',
+        label: 'PopulationStdDev'
     }]
 };
 
