@@ -30,8 +30,8 @@
             </el-select>
           </span>
           <span style="margin-left: 3%">
-            <el-button type="primary" @click="getDataSet">开始发放水位线</el-button>
-            <el-button type="info" @click="stopDataSet">停止发放</el-button>
+            <el-button type="primary" @click="getDataSet" plain>开始发放水位线</el-button>
+            <el-button type="danger" @click="stopDataSet" plain>停止发放</el-button>
           </span>
         </el-card>
       </el-col>

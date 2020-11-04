@@ -17,7 +17,7 @@
         <span style="margin-right: 2%">
             聚合函数:
             <el-select
-                style="width: 220px"
+                style="width: 160px"
                 v-model="func"
                 placeholder="请选择聚合函数">
               <el-option
@@ -29,7 +29,10 @@
             </el-select>
           </span>
         <span>
-            <el-button type="primary">开始监控</el-button>
+            <el-button type="primary" @click="handlerRun" plain style="margin-right: 2%">开始监控</el-button>
+        </span>
+        <span>
+            <el-button type="danger" @click="handlerStop" plain>停止任务</el-button>
         </span>
       </el-card>
       </el-col>
@@ -72,7 +75,7 @@ export default {
       slideSize: 2,
       func: 'Count',
       selectFunc: src.SelectFunc,
-      isloading: false,
+      isloading: true,
       baseUrl: "http://0.0.0.0:5000",
     }
   },
@@ -130,7 +133,27 @@ export default {
       let memChart = echarts.init(document.getElementById("mem"));
       cpuChart.setOption(op.cpu);
       memChart.setOption(op.mem);
-      setInterval(this.updateCpuAndMem(), 5000);
+      setInterval(this.updateCpuAndMem(), 2000);
+    },
+    handlerRun() {
+      let params = {
+        'win': this.windowSize,
+        'sli': this.slideSize,
+        'agg': this.func
+      }
+      axios.get(this.baseUrl+"/api/slide/run", {params: params}).then(res=>{
+        if(res.data.status===0) {
+          this.isloading = false;
+        }
+      })
+    },
+    handlerStop() {
+      axios.get(this.baseUrl+"/api/slide/killall",).then(res=>{
+        if(res.data.status===0) {
+          this.isloading = true;
+          window.location.reload(true);
+        }
+      })
     }
   }
 }

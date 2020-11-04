@@ -281,7 +281,7 @@ let ops = {
             {
                 show: true,
                 realtime: true,
-                start: 40,
+                start: 0,
                 end: 100,
                 // xAxisIndex: [0, 1]
             }
@@ -301,7 +301,7 @@ let ops = {
         ],
         yAxis: [
             {
-                name: 'time',
+                name: 'cpu利用率(%)',
                 type: 'value',
                 // max: 2000
             },
@@ -388,7 +388,7 @@ let ops = {
             {
                 show: true,
                 realtime: true,
-                start: 40,
+                start: 0,
                 end: 100,
                 // xAxisIndex: [0, 1]
             }
@@ -408,7 +408,7 @@ let ops = {
         ],
         yAxis: [
             {
-                name: 'time',
+                name: '内存利用率(%)',
                 type: 'value',
                 // max: 2000
             },

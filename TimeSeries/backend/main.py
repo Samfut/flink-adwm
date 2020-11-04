@@ -94,7 +94,7 @@ def handler_sys():
             print(ps[i].status())
             if ps[i] and ps[i].status() == 'running':
                 flag = False
-                cpu[map_idx_window[i]] = ps[i].cpu_times().user
+                cpu[map_idx_window[i]] = ps[i].cpu_percent()
                 mem[map_idx_window[i]] = ps[i].memory_percent()
                 print(cpu, mem)
     if flag == True:
