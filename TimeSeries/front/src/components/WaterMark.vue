@@ -48,13 +48,13 @@
       </el-col>
     </el-row>
       <br>
-    <el-row>
+      <el-row>
       <el-col :span="22" :offset="1">
         <el-card v-loading="isloading"
                  element-loading-text="等待数据加载中"
                  element-loading-spinner="el-icon-loading"
         >
-          <div id="window" style="width: 1000px;height: 300px"></div>
+          <div id="wait" style="width: 1000px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -65,7 +65,7 @@
                  element-loading-text="等待数据加载中"
                  element-loading-spinner="el-icon-loading"
         >
-          <div id="wait" style="width: 1000px;height: 300px"></div>
+          <div id="window" style="width: 1000px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -87,7 +87,7 @@ export default {
       modelValue: [],
       dataSetOption: src.SelectData,
       SelectModel: src.SelectModel,
-      baseUrl: "http://slave2:5000",
+      baseUrl: "http://127.0.0.1:5000",
       isloading: true
     }
   },
@@ -193,9 +193,9 @@ export default {
       return update;
     },
     initDelay() {
-      setInterval(this.updateDisOrder(), 1000);
-      setInterval(this.updateWindow(), 500);
-      setInterval(this.updateWait(), 500);
+      setInterval(this.updateDisOrder(), 500);
+      setInterval(this.updateWindow(), 100);
+      setInterval(this.updateWait(), 100);
     },
   }
 }

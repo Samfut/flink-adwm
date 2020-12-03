@@ -59,10 +59,10 @@ class LSTMPredictor:
             self.model = model
             return model
         model = Sequential()
-        model.add(LSTM(120, input_shape=(train_x.shape[1], train_x.shape[2])))
+        model.add(LSTM(120, input_shape=(train_x.shape[1], train_x.shape[2]), stateful=True))
         model.add(Dense(1))
         model.compile(loss='mean_squared_error', optimizer='adam')
-        model.fit(train_x, y, epochs=100, batch_size=1, verbose=2)
+        model.fit(train_x, y, epochs=100, batch_size=1, verbose=2, shuffle=False)
         model.save(model_path)
         self.model = model
         return model

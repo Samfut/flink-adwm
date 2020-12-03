@@ -62,16 +62,16 @@ public class DiStreamingJob {
     public static void main(String[] args) throws Exception {
 
         // TODO 设置监控性能的结果输出路径 分为2种 一种是周期性水印的监控结果 一种是自适应水印的监控结果
-        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/water.csv";
-        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/timelatency.csv";
-        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/periodic/disorder.csv";
+        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/water.csv";
+        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/timelatency.csv";
+        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/disorder.csv";
 
 //        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/water.csv";
 //        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/timelatency.csv";
 //        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/disorder.csv";
 
         // 加载数据
-        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201710/DIDI20171004.csv");
+        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201710/DIDI20171001.csv");
         String bikeDataPath = bikeDataUrl.getFile();
 
         // init params
@@ -109,14 +109,14 @@ public class DiStreamingJob {
         // init datasource
         boolean isheuristic = true;
         // 延迟等待参数
-        long lantency = 1000 * 60 * 4;
+        long lantency = 1000 * 60 * 1;
         // 窗口大小参数
-        long windowSize = 60*4;
+        long windowSize = 60*1;
         // TODO 自适应的参数
         double threshold = 0.4;
         int monitorPer = 2;
         // TODO 比较性能指标参数的时候
-        long maxDelayThreshold = 1000 * 60 * 4;
+        long maxDelayThreshold = 1000 * 60 * 1;
         // TODO 展示优化结果图的时候的参数
 //        long maxDelayThreshold = 1000 * 15 * 12;
 

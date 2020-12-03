@@ -408,7 +408,7 @@ let ops = {
         ],
         yAxis: [
             {
-                name: '内存利用率(%)',
+                name: '内存占用(GB)',
                 type: 'value',
                 // max: 2000
             },

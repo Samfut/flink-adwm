@@ -10,9 +10,6 @@ let src = {
         value: 'CB',
         label: '纽约市共享单车数据集',
         children: [{
-            value: '201809',
-            label: '2018-09'
-        },{
             value: '201810',
             label: '2018-10'
         },{

@@ -38,28 +38,17 @@ def handler_predict():
 def handler_watermark():
     params = request.args.to_dict()
     dataset = params['dataset']
-    t = dataset.split('2')[0]
-    if t == 'CB':
-        csvfile = pd.read_csv('./data/WaitTime/CB201810.csv', index_col=0)
-        csvfile = csvfile.fillna(0)
-        res = dict(xtime=csvfile.index.tolist(), ywait=csvfile['adwater'].tolist(), ycom=csvfile['period(1000ms)'].tolist())
-    else:
-        csvfile = pd.read_csv('./data/WaitTime/DIDI201710.csv', index_col=0)
-        csvfile = csvfile.fillna(0)
-        res = dict(xtime=csvfile.index.tolist(), ywait=csvfile['adwater'].tolist(), ycom=csvfile['period(1000ms)'].tolist())
+    csvfile = pd.read_csv(f'./data/WaitTime/{dataset}.csv', index_col=0)
+    csvfile = csvfile.fillna(0)
+    res = dict(xtime=csvfile.index.tolist(), ywait=csvfile['adwater'].tolist(), ycom=csvfile['period(1000ms)'].tolist())
     return json.dumps(res)
     
 @app.route('/api/window/wait')
 def handler_window():
     params = request.args.to_dict()
     dataset = params['dataset']
-    t = dataset.split('2')[0]
-    if t == 'CB':
-        csvfile = pd.read_csv('./data/WindowWait/CB201810.csv', index_col=0)
-        res = dict(xtime=csvfile.index.tolist(), ywait=csvfile['wait'].tolist(), ycom=csvfile['com'].tolist())
-    else:
-        csvfile = pd.read_csv('./data/WindowWait/DIDI201710.csv', index_col=0)
-        res = dict(xtime=csvfile.index.tolist(), ywait=csvfile['wait'].tolist(), ycom=csvfile['com'].tolist())
+    csvfile = pd.read_csv(f'./data/WindowWait/{dataset}.csv', index_col=0)
+    res = dict(xtime=csvfile.index.tolist(), ywait=csvfile['wait'].tolist(), ycom=csvfile['com'].tolist())    
     return json.dumps(res)
 
 @app.route('/api/slide/run')
@@ -95,8 +84,8 @@ def handler_sys():
             if ps[i] and ps[i].status() == 'running':
                 flag = False
                 cpu[map_idx_window[i]] = ps[i].cpu_times().user
-                mem[map_idx_window[i]] = ps[i].memory_percent()
-                print(cpu, mem)
+                mem[map_idx_window[i]] = ps[i].memory_full_info().uss/ 1024. / 1024. / 1024.
+                # print(dict(ps[i].memory_full_info()))
     if flag == True:
         dup = False
     return json.dumps(dict(status=0,cpu=cpu, mem=mem))

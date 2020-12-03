@@ -62,10 +62,10 @@ public class StreamingJob {
     public static void main(String[] args) throws Exception {
 
         // set filePath
-        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/periodic/water.csv";
-        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/periodic/timelatency.csv";
-        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/periodic/disorder.csv";
-        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201810/CB20181001.csv");
+        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/water.csv";
+        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/timelatency.csv";
+        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/disorder.csv";
+        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201902/CB20190201.csv");
         String bikeDataPath = bikeDataUrl.getFile();
 
         // init params
@@ -103,9 +103,9 @@ public class StreamingJob {
         // init datasource
         boolean isheuristic = true;
         // 延迟等待参数
-        long lantency = 2000;
+        long lantency = 1000;
         // 窗口大小参数
-        long windowSize = 120;
+        long windowSize = 60;
 
 //        BikeSource bs =  new BikeSource(isheuristic, lantency);
         AdBikeSource bs =  new AdBikeSource(0.3, windowSize, 10, 4700);
