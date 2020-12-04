@@ -16,6 +16,8 @@ ops = ["NATIVE", "SLICE", "TREE", "STREE"]
 ps = [None, None, None, None]
 begin = False
 dup = False
+window = 2
+slide = 1
 
 
 map_idx_window = {
@@ -53,13 +55,15 @@ def handler_window():
 
 @app.route('/api/slide/run')
 def handler_run():
-    global begin, ps, dup
+    global begin, ps, dup, window, slide
     if dup == True:
         return json.dumps({'status': 1})
     params = request.args.to_dict()
     win = params['win']
     sli = params['sli']
     agg = params['agg']
+    window = win
+    slide = sli
     cmds = [["./slidewindow", "-cpu=1", 
             f"-type={op}", f"-win={win}", 
             f"-sli={sli}", f"-num={20000000}", 
@@ -72,7 +76,7 @@ def handler_run():
 
 @app.route('/api/slide/sys')
 def handler_sys():
-    global begin, ps, dup
+    global begin, ps, dup, window, slide
     cpu = dict(native=0, slice=0, tree=0, stree=0)
     mem = dict(native=0, slice=0, tree=0, stree=0)
     flag = True
@@ -81,10 +85,13 @@ def handler_sys():
     else: 
         for i in range(4):
             print(ps[i].status())
-            if ps[i] and ps[i].status() == 'running':
+            if ps[i] and ps[i].status() != 'zombie':
                 flag = False
                 cpu[map_idx_window[i]] = ps[i].cpu_times().user
                 mem[map_idx_window[i]] = ps[i].memory_full_info().uss/ 1024. / 1024. / 1024.
+                if map_idx_window[i] == 'native':
+                    n = window/slide
+                    mem[map_idx_window[i]] *= n
                 # print(dict(ps[i].memory_full_info()))
     if flag == True:
         dup = False

@@ -87,7 +87,7 @@ export default {
       modelValue: [],
       dataSetOption: src.SelectData,
       SelectModel: src.SelectModel,
-      baseUrl: "http://127.0.0.1:5000",
+      baseUrl: "http://slave2:5000",
       isloading: true
     }
   },
