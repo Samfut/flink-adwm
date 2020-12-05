@@ -67,10 +67,6 @@ public class DiStreamingJob {
         String LatencyOutPath = resultUrl.getFile() + "./timelatency.csv";
         String DisOrderOutPath = resultUrl.getFile() + "./disorder.csv";
 
-//        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/water.csv";
-//        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/timelatency.csv";
-//        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/disorder.csv";
-
         // 加载数据
         URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201710/DIDI20171001.csv");
         String bikeDataPath = bikeDataUrl.getFile();

@@ -3,11 +3,13 @@ package adwater.strategy;
 import adwater.DiStreamingJob;
 import adwater.predictor.ClassVector;
 import adwater.predictor.DecisionTreePredictor;
+import adwater.predictor.LSTMPredictor;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -15,7 +17,8 @@ public class NaiveStrategy {
 
     private SimpleDateFormat dateFormat;
     private Calendar calendar;
-    private DecisionTreePredictor decisionTreePredictor;
+    private DecisionTreePredictor Predictor;
+    private LSTMPredictor lstmPredictor;
     private long maxDelay;
     private double latency;
     private double threshold;
@@ -30,7 +33,8 @@ public class NaiveStrategy {
         this.threshold = threshold;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
         URL modelURL = NaiveStrategy.class.getClassLoader().getResource("model/citybike/treemodel.pmml");
-        this.decisionTreePredictor = new DecisionTreePredictor(modelURL.getPath());
+        this.Predictor = new DecisionTreePredictor(modelURL.getPath());
+        this.lstmPredictor = new LSTMPredictor(modelURL.getPath());
         this.lateEvent = 0;
         this.eventCount = 0;
         this.latency = 0;
@@ -38,7 +42,7 @@ public class NaiveStrategy {
         this.maxDelayThreshold = maxDelayThreshold;
     }
 
-    private ClassVector extracrVector(long timestamp) {
+    private ClassVector extracrVector(long timestamp, List<Double> seq) {
         calendar = Calendar.getInstance();
         calendar.setTime(new Date(timestamp));
 
@@ -49,12 +53,15 @@ public class NaiveStrategy {
         return new ClassVector(hour, day, dayofweek);
     }
 
-    private double predict(int hour, int day, int dayofweek) {
-        return this.decisionTreePredictor.predict(hour, day, dayofweek);
+    private double predict(ClassVector vector, List<Double> seq) {
+        return this.Predictor.predict(vector.hour, vector.day, vector.dayofweek, seq);
     }
 
+    private double predictl(ClassVector vector, List<Double> seq) {
+        return this.lstmPredictor.predict(vector.hour, vector.day, vector.dayofweek, seq);
+    }
 
-    public long make(long timestamp, long watermark, double lateRate) {
+    public long make(long timestamp, long watermark, double lateRate, List<Double> seq) {
 
         // lateRate用来监控延迟率，如果是-1表示没到监控周期
         if(lateRate < 0) {
@@ -68,8 +75,8 @@ public class NaiveStrategy {
         if(maxDelay > maxDelayThreshold) {
             maxDelay = maxDelayThreshold;
         }
-        ClassVector vector = this.extracrVector(timestamp);
-        double disorder = this.predict(vector.hour, vector.day, vector.dayofweek);
+        ClassVector vector = this.extracrVector(timestamp, seq);
+        double disorder = this.predict(vector, seq);
 
         //  如果监控出来迟到率比较低的时候
         if(lateRate <= threshold) {

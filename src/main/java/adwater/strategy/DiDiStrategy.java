@@ -7,7 +7,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.Arrays;
 
 
 public class DiDiStrategy {
@@ -49,8 +51,9 @@ public class DiDiStrategy {
         return new ClassVector(hour, day, dayofweek);
     }
 
-    private double predict(int hour, int day, int dayofweek) {
-        return this.decisionTreePredictor.predict(hour, day, dayofweek);
+    private double predict(ClassVector vector) {
+        List<Double> seq  = Arrays.asList(0.0);
+        return this.decisionTreePredictor.predict(vector.hour, vector.day, vector.dayofweek, seq);
     }
 
 
@@ -69,7 +72,7 @@ public class DiDiStrategy {
             maxDelay = maxDelayThreshold;
         }
         ClassVector vector = this.extracrVector(timestamp);
-        double disorder = this.predict(vector.hour, vector.day, vector.dayofweek);
+        double disorder = this.predict(vector);
 
         //  如果监控出来迟到率比较低的时候
         if(lateRate <= threshold) {

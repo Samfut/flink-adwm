@@ -17,11 +17,15 @@ import java.util.List;
 import java.util.Map;
 
 public class LSTMPredictor {
+
+    private Evaluator evaluator;
+    private String PmmlPath;
+
     private Evaluator loadPmml(){
         PMML pmml = new PMML();
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("/Users/yangs/Desktop/result/lstm.pmml");
+            inputStream = new FileInputStream(this.PmmlPath);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -45,12 +49,17 @@ public class LSTMPredictor {
         return evaluator;
     }
 
-    private double predict(Evaluator evaluator, int hour, int day, int dayofweek) {
+    public LSTMPredictor(String PmmlPath) {
+        this.PmmlPath = PmmlPath;
+        this.evaluator = this.loadPmml();
+    }
+
+    public double predict(int hour, int day, int dayofweek, List<Double> seq) {
         Map<String, Integer> data = new HashMap<String, Integer>();
         data.put("hour", hour);
         data.put("day", day);
         data.put("dayofweek", dayofweek);
-
+        seq.hashCode();
         List<InputField> inputFields = evaluator.getInputFields();
         Map<FieldName, FieldValue> arguments = new LinkedHashMap<FieldName, FieldValue>();
         for (InputField inputField : inputFields) {

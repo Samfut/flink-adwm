@@ -54,7 +54,7 @@ public class DecisionTreePredictor {
         this.evaluator = this.loadPmml();
     }
 
-    public double predict(int hour, int day, int dayofweek) {
+    public double predict(int hour, int day, int dayofweek, List<Double> seq) {
         Map<String, Integer> data = new HashMap<String, Integer>();
         data.put("hour", hour);
         data.put("day", day);
@@ -85,14 +85,14 @@ public class DecisionTreePredictor {
         return primitiveValue;
     }
 
-    public static void main(String[] args) {
-        DecisionTreePredictor d = new DecisionTreePredictor("/Users/yangs/Projects/adwater/TimeSeries/didi/treemodel.pmml");
-        System.out.println(d.predict(0,1,0));
-        System.out.println(d.predict(1,1,0));
-        System.out.println(d.predict(2,1,0));
-        System.out.println(d.predict(3,1,0));
-        System.out.println(d.predict(4,1,0));
-        System.out.println(d.predict(5,1,0));
-        System.out.println(d.predict(6,1,0));
-    }
+//    public static void main(String[] args) {
+//        DecisionTreePredictor d = new DecisionTreePredictor("/Users/yangs/Projects/adwater/TimeSeries/didi/treemodel.pmml");
+//        System.out.println(d.predict(0,1,0));
+//        System.out.println(d.predict(1,1,0));
+//        System.out.println(d.predict(2,1,0));
+//        System.out.println(d.predict(3,1,0));
+//        System.out.println(d.predict(4,1,0));
+//        System.out.println(d.predict(5,1,0));
+//        System.out.println(d.predict(6,1,0));
+//    }
 }
