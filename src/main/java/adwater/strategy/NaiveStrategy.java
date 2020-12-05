@@ -1,8 +1,10 @@
 package adwater.strategy;
 
+import adwater.DiStreamingJob;
 import adwater.predictor.ClassVector;
 import adwater.predictor.DecisionTreePredictor;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,7 +29,8 @@ public class NaiveStrategy {
     public NaiveStrategy(double threshold, long maxDelayThreshold) {
         this.threshold = threshold;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
-        this.decisionTreePredictor = new DecisionTreePredictor("/Users/yangs/Projects/adwater/TimeSeries/citybike/treemodel.pmml");
+        URL modelURL = NaiveStrategy.class.getClassLoader().getResource("model/citybike/treemodel.pmml");
+        this.decisionTreePredictor = new DecisionTreePredictor(modelURL.getPath());
         this.lateEvent = 0;
         this.eventCount = 0;
         this.latency = 0;
@@ -70,16 +73,12 @@ public class NaiveStrategy {
 
         //  如果监控出来迟到率比较低的时候
         if(lateRate <= threshold) {
-            // 当前乱序率较低，那么继续以较低的latency
+            // 当前乱序率较低，那么继续以较低的latency发放水位线
             if(disorder<=threshold) {
                 latency = disorder * Math.min(latency, maxDelay);;
-//                latency = 0;
             }
             // 否则就是在较高的乱序率下降低，说明延迟较高 要缓缓降低
             else {
-//                if(latency == 0) {
-//                    latency = disorder * maxDelay;
-//                }
                 latency = latency - (1-disorder)*latency;
             }
             if(ThreadLocalRandom.current().nextDouble() > threshold - lateRate) {
@@ -112,7 +111,5 @@ public class NaiveStrategy {
                 return -1;
             }
         }
-
-
     }
 }

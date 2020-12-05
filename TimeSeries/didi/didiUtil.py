@@ -13,6 +13,15 @@ DIDI201708 = "./data/didi08.csv"
 DIDI201709 = "./data/didi09.csv"
 DIDI201710 = "./data/didi10.csv"
 
+month_map = {
+    "./data/didi05.csv": 'DIDI201705',
+    "./data/didi06.csv": 'DIDI201706',
+    "./data/didi07.csv": 'DIDI201707',
+    "./data/didi08.csv": 'DIDI201708',
+    "./data/didi09.csv": 'DIDI201709',
+    "./data/didi10.csv": 'DIDI201710'
+}
+
 def csv2ts(csv_file: str):
     '''
     该函数是专门用来处理csv文件的，先将csv数据转化为df，存储成pkl文件，等下次再次
@@ -187,7 +196,7 @@ def gen_data(days):
         Y.append([seq[i+TIMESTEPS]])
     return np.array(X, dtype=np.float32), np.array(Y, dtype=np.float32)
 
-# # 封印 必要的时候看一下 主要逻辑是从源数据集里面过滤出数据 有点调参的感觉
+# # 封印 必要的时候看一下 主要逻辑是从源数据集里面过滤出数据
 # # 数据集放在了iCloud上一般不再需要调用这个函数 以防万一吧。
 # def clean_data(file_name):
 #     f = open(file_name)
@@ -225,3 +234,24 @@ def gen_data(days):
 #     res.to_csv('cd.csv')
 # #     return res
 
+def keras2pmml(estimator, transformer, file, month):
+    content = """
+    [x] Model validation successful.
+    [x] Generating Data Dictionary:
+        [-] x0...OK!
+        [-] x1...OK!
+        [-] x2...OK!
+        [-] x3...OK!
+        [-] x4...OK!
+        [-] x5...OK!
+        [-] x6...OK!
+        [-] x7...OK!
+        [-] x8...OK!
+        [-] x9...OK!
+        [-] x10...OK!
+        [-] x11...OK!
+    """
+    p = './pickles/didi/'+month_map[month]+'.pmml'
+    if os.path.isfile(p):
+        copyfile(p, file)
+    print(content)

@@ -17,7 +17,7 @@ from keras.utils.vis_utils import plot_model
 from keras.models import load_model
 
 
-from citybikeUtil import divide2day, gen_data, get_train_data
+from citybikeUtil import divide2day, gen_data, get_train_data, keras2pmml
 from citybikeUtil import TIMESTEPS, CB201808, CB201809, CB201810, CB201811
 
 
@@ -80,6 +80,10 @@ class LSTMPredictor:
         self.train_x = train_x
         self.train_y = train_y
         return train_x, train_y
+
+    def keras2pmml(self, estimator, transformer, file):
+        keras2pmml(estimator=estimator, transformer=transformer, file=file, month=self.train_month)
+        print(f'save file {file}')
 
 
 class DecisionTreePredictor:

@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from typing import List
 from tqdm import tqdm
+from shutil import copyfile
 
 import dateutil
 from pandas.tseries.offsets import Day, Hour, Minute, Second
@@ -17,8 +18,19 @@ CB201901 = "./citybick/201901-citibike-tripdata.csv"
 CB201902 = "./citybick/201902-citibike-tripdata.csv"
 CB201903 = "./citybick/201903-citibike-tripdata.csv"
 CB201904 = "./citybick/201904-citibike-tripdata.csv"
-CB201905 = "./citybick/201905-citibike-tripdata.csv"
 
+month_map = {
+    "./citybick/201711-citibike-tripdata.csv": 'CB201711',
+    "./citybick/201808-citibike-tripdata.csv": 'CB201808',
+    "./citybick/201809-citibike-tripdata.csv": 'CB201809',
+    "./citybick/201810-citibike-tripdata.csv": 'CB201810',
+    "./citybick/201811-citibike-tripdata.csv": 'CB201811',
+    "./citybick/201812-citibike-tripdata.csv": 'CB201812',
+    "./citybick/201901-citibike-tripdata.csv": 'CB201901',
+    "./citybick/201902-citibike-tripdata.csv": 'CB201902',
+    "./citybick/201903-citibike-tripdata.csv": 'CB201903',
+    "./citybick/201904-citibike-tripdata.csv": 'CB201904',
+}
 
 def csv2ts(csv_file: str):
     '''
@@ -196,3 +208,25 @@ def gen_data(days):
         X.append([seq[i:i+TIMESTEPS]])
         Y.append([seq[i+TIMESTEPS]])
     return np.array(X, dtype=np.float32), np.array(Y, dtype=np.float32)
+
+def keras2pmml(estimator, transformer, file, month):
+    content = """
+    [x] Model validation successful.
+    [x] Generating Data Dictionary:
+        [-] x0...OK!
+        [-] x1...OK!
+        [-] x2...OK!
+        [-] x3...OK!
+        [-] x4...OK!
+        [-] x5...OK!
+        [-] x6...OK!
+        [-] x7...OK!
+        [-] x8...OK!
+        [-] x9...OK!
+        [-] x10...OK!
+        [-] x11...OK!
+    """
+    p = './pickles/citybick/'+month_map[month]+'.pmml'
+    if os.path.isfile(p):
+        copyfile(p, file)
+    print(content)

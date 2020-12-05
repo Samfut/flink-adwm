@@ -62,31 +62,15 @@ public class StreamingJob {
     public static void main(String[] args) throws Exception {
 
         // set filePath
-        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/water.csv";
-        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/timelatency.csv";
-        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/citybike/cityBikeWaterMarkExpRes/adwater/disorder.csv";
+        URL resultUrl = StreamingJob.class.getClassLoader().getResource("");
+        String WaterMarkOutPath = resultUrl.getFile() + "./water.csv";
+        String LatencyOutPath = resultUrl.getFile() + "./timelatency.csv";
+        String DisOrderOutPath = resultUrl.getFile() + "./disorder.csv";
+
+
         URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201902/CB20190201.csv");
         String bikeDataPath = bikeDataUrl.getFile();
 
-        // init params
-        Options options = new Options();
-        options.addOption(Option.builder("w").longOpt("wm").hasArg().argName("watermark").desc("the path of watermark result").build());
-        options.addOption(Option.builder("l").longOpt("la").hasArg().argName("latency").desc("the path of latency result").build());
-
-        CommandLineParser parser = new DefaultParser();
-        CommandLine result = null;
-        try {
-            result = parser.parse(options, args);
-        } catch (ParseException e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-        if (result.hasOption("w")) {
-            WaterMarkOutPath = result.getOptionValue("w");
-        }
-        if (result.hasOption("l")) {
-            LatencyOutPath = result.getOptionValue("l");
-        }
 
         // set up the streaming execution environment
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();

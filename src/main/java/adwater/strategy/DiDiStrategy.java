@@ -3,6 +3,7 @@ package adwater.strategy;
 import adwater.predictor.ClassVector;
 import adwater.predictor.DecisionTreePredictor;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,7 +28,9 @@ public class DiDiStrategy {
     public DiDiStrategy(double threshold, long maxDelayThreshold) {
         this.threshold = threshold;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        this.decisionTreePredictor = new DecisionTreePredictor("/Users/yangs/Projects/adwater/TimeSeries/didi/treemodel.pmml");
+//        this.decisionTreePredictor = new DecisionTreePredictor("/Users/yangs/Projects/adwater/TimeSeries/didi/treemodel.pmml");
+        URL modelURL = DiDiStrategy.class.getClassLoader().getResource("model/citybike/treemodel.pmml");
+        this.decisionTreePredictor = new DecisionTreePredictor(modelURL.getPath());
         this.lateEvent = 0;
         this.eventCount = 0;
         this.latency = 0;

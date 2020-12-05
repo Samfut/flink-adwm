@@ -62,9 +62,10 @@ public class DiStreamingJob {
     public static void main(String[] args) throws Exception {
 
         // TODO 设置监控性能的结果输出路径 分为2种 一种是周期性水印的监控结果 一种是自适应水印的监控结果
-        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/water.csv";
-        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/timelatency.csv";
-        String DisOrderOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/disorder.csv";
+        URL resultUrl = DiStreamingJob.class.getClassLoader().getResource("");
+        String WaterMarkOutPath = resultUrl.getFile() + "./water.csv";
+        String LatencyOutPath = resultUrl.getFile() + "./timelatency.csv";
+        String DisOrderOutPath = resultUrl.getFile() + "./disorder.csv";
 
 //        String WaterMarkOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/water.csv";
 //        String LatencyOutPath = "/Users/yangs/Projects/adwater/TimeSeries/didi/didiWaterMarkExpRes/adwater/timelatency.csv";
@@ -73,26 +74,6 @@ public class DiStreamingJob {
         // 加载数据
         URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201710/DIDI20171001.csv");
         String bikeDataPath = bikeDataUrl.getFile();
-
-        // init params
-        Options options = new Options();
-        options.addOption(Option.builder("w").longOpt("wm").hasArg().argName("watermark").desc("the path of watermark result").build());
-        options.addOption(Option.builder("l").longOpt("la").hasArg().argName("latency").desc("the path of latency result").build());
-
-        CommandLineParser parser = new DefaultParser();
-        CommandLine result = null;
-        try {
-            result = parser.parse(options, args);
-        } catch (ParseException e) {
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-        if (result.hasOption("w")) {
-            WaterMarkOutPath = result.getOptionValue("w");
-        }
-        if (result.hasOption("l")) {
-            LatencyOutPath = result.getOptionValue("l");
-        }
 
         // set up the streaming execution environment
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -151,7 +132,7 @@ public class DiStreamingJob {
 
 
         // exec system
-        env.execute("Flink Streaming Java API Skeleton");
+        env.execute("Flink Streaming Task");
 
         // store res(wm/la) to disk
         LatencyResWriter.csvWriter.close();

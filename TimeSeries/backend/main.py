@@ -84,14 +84,10 @@ def handler_sys():
         return json.dumps({'status': 1})
     else: 
         for i in range(4):
-            print(ps[i].status())
             if ps[i] and ps[i].status() != 'zombie':
                 flag = False
-                cpu[map_idx_window[i]] = ps[i].cpu_times().user
+                cpu[map_idx_window[i]] = ps[i].cpu_percent(None)
                 mem[map_idx_window[i]] = ps[i].memory_full_info().uss/ 1024. / 1024. / 1024.
-                if map_idx_window[i] == 'native':
-                    n = window/slide
-                    mem[map_idx_window[i]] *= n
                 # print(dict(ps[i].memory_full_info()))
     if flag == True:
         dup = False

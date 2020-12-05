@@ -17,7 +17,7 @@ from keras.utils.vis_utils import plot_model
 from keras.models import load_model
 
 
-from didiUtil import divide2day, gen_data, get_train_data
+from didiUtil import divide2day, gen_data, get_train_data, keras2pmml
 from didiUtil import DIDI201705, DIDI201706, DIDI201707, DIDI201708, DIDI201709, DIDI201710, TIMESTEPS
 
 
@@ -81,6 +81,9 @@ class LSTMPredictor:
         self.train_y = train_y
         return train_x, train_y
 
+    def keras2pmml(self, estimator, transformer, file):
+        keras2pmml(estimator=estimator, transformer=transformer, file=file, month=self.train_month)
+        print(f'save file {file}')
 
 class DecisionTreePredictor:
     '''
