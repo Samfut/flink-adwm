@@ -62,14 +62,14 @@ public class StreamingJob {
     public static void main(String[] args) throws Exception {
 
         // set filePath
-        URL resultUrl = StreamingJob.class.getClassLoader().getResource("");
-        String WaterMarkOutPath = resultUrl.getFile() + "./water.csv";
-        String LatencyOutPath = resultUrl.getFile() + "./timelatency.csv";
-        String DisOrderOutPath = resultUrl.getFile() + "./disorder.csv";
+//        URL resultUrl = StreamingJob.class.getClassLoader().getResource("");
+//        String WaterMarkOutPath = resultUrl.getFile() + "/water.csv";
+//        String LatencyOutPath = resultUrl.getFile() + "/timelatency.csv";
+//        String DisOrderOutPath = resultUrl.getFile() + "/disorder.csv";
 
 
-        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201902/CB20190201.csv");
-        String bikeDataPath = bikeDataUrl.getFile();
+//        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201902/CB20190201.csv");
+//        String bikeDataPath = bikeDataUrl.getFile();
 
 
         // set up the streaming execution environment
@@ -77,12 +77,12 @@ public class StreamingJob {
         env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
         // init input source data
-        new SrcReader(bikeDataPath);
+//        new SrcReader(bikeDataPath);
 
-        // init res writer
-        new LatencyResWriter(LatencyOutPath);
-        new WatermarkResWriter(WaterMarkOutPath);
-        new DisOrderResWriter(DisOrderOutPath);
+//        // init res writer
+//        new LatencyResWriter(LatencyOutPath);
+//        new WatermarkResWriter(WaterMarkOutPath);
+//        new DisOrderResWriter(DisOrderOutPath);
 
         // init datasource
         boolean isheuristic = true;

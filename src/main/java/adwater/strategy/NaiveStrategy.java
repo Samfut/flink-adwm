@@ -32,9 +32,10 @@ public class NaiveStrategy {
     public NaiveStrategy(double threshold, long maxDelayThreshold) {
         this.threshold = threshold;
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
-        URL modelURL = NaiveStrategy.class.getClassLoader().getResource("model/citybike/treemodel.pmml");
-        this.Predictor = new DecisionTreePredictor(modelURL.getPath());
-        this.lstmPredictor = new LSTMPredictor(modelURL.getPath());
+//        URL modelURL = getClass().getResource("/model/citybike/treemodel.pmml");
+        String modelPath = "/home/lsy/resources/model/citybike/treemodel.pmml";
+        this.Predictor = new DecisionTreePredictor(modelPath);
+        this.lstmPredictor = new LSTMPredictor(modelPath);
         this.lateEvent = 0;
         this.eventCount = 0;
         this.latency = 0;

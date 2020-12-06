@@ -1,5 +1,6 @@
 package adwater.datasource;
 
+import adwater.StreamingJob;
 import adwater.datatypes.BikeRide;
 import adwater.predictor.ClassVector;
 import adwater.predictor.DecisionTreePredictor;
@@ -14,6 +15,7 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.api.watermark.Watermark;
 
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -38,7 +40,7 @@ public class AdBikeSource extends BikeRideSource {
     private long maxDelayThreshold;
     private Calendar calendar;
 
-    public AdBikeSource(double threshold, long windowSize, int monitorPer, long maxDelayThreshold) {
+    public AdBikeSource(double threshold, long windowSize, int monitorPer, long maxDelayThreshold) throws Exception {
         this.isRunning = true;
         this.eventCount = 0L;
         this.lateEvent = 0L;
@@ -58,6 +60,22 @@ public class AdBikeSource extends BikeRideSource {
         for(int i = 0; i < 11; i++) {
             this.seq.offer(0.0);
         }
+//        String bikePath = "/home/lsy/resources/bike/CB201902/CB20190201.csv";
+////        URL bikeDataUrl = getClass().getResource("/bike/CB201902/CB20190201.csv");
+////        String bikeDataPath = bikeDataUrl.getFile();
+//        // init input source data
+//        new SrcReader(bikePath);
+//
+////        URL resultUrl = getClass().getResource("");
+//        String prePath = "/home/lsy/resources/";
+//        String WaterMarkOutPath = prePath + "water.csv";
+//        String LatencyOutPath = prePath + "timelatency.csv";
+//        String DisOrderOutPath = prePath + "disorder.csv";
+//
+//        // init res writer
+//        new LatencyResWriter(LatencyOutPath);
+//        new WatermarkResWriter(WaterMarkOutPath);
+//        new DisOrderResWriter(DisOrderOutPath);
     }
 
     // read csv head
@@ -121,6 +139,23 @@ public class AdBikeSource extends BikeRideSource {
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
 //        DiDiStrategy strategy = new DiDiStrategy(threshold, maxDelayThreshold);
+        String bikePath = "/home/lsy/resources/bike/CB201902/CB20190201.csv";
+//        URL bikeDataUrl = getClass().getResource("/bike/CB201902/CB20190201.csv");
+//        String bikeDataPath = bikeDataUrl.getFile();
+        // init input source data
+        new SrcReader(bikePath);
+
+//        URL resultUrl = getClass().getResource("");
+        String prePath = "/home/lsy/resources/";
+        String WaterMarkOutPath = prePath + "water.csv";
+        String LatencyOutPath = prePath + "timelatency.csv";
+        String DisOrderOutPath = prePath + "disorder.csv";
+
+        // init res writer
+        new LatencyResWriter(LatencyOutPath);
+        new WatermarkResWriter(WaterMarkOutPath);
+        new DisOrderResWriter(DisOrderOutPath);
+
         NaiveStrategy strategy = new NaiveStrategy(threshold, maxDelayThreshold);
         this.readHead();
         preLate = 0;
