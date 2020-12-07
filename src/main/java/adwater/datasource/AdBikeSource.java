@@ -39,8 +39,14 @@ public class AdBikeSource extends BikeRideSource {
     private int monitorPer;
     private long maxDelayThreshold;
     private Calendar calendar;
+    private String DataSet;
+    private Map<String, String> CBfileMap;
+    private Map<String, String> DifileMap;
+    private String cbprefix;
+    private String diprefix;
 
-    public AdBikeSource(double threshold, long windowSize, int monitorPer, long maxDelayThreshold) throws Exception {
+    public AdBikeSource(String data, double threshold, long windowSize, int monitorPer, long maxDelayThreshold) throws Exception {
+        this.DataSet  = data;
         this.isRunning = true;
         this.eventCount = 0L;
         this.lateEvent = 0L;
@@ -60,22 +66,28 @@ public class AdBikeSource extends BikeRideSource {
         for(int i = 0; i < 11; i++) {
             this.seq.offer(0.0);
         }
-//        String bikePath = "/home/lsy/resources/bike/CB201902/CB20190201.csv";
-////        URL bikeDataUrl = getClass().getResource("/bike/CB201902/CB20190201.csv");
-////        String bikeDataPath = bikeDataUrl.getFile();
-//        // init input source data
-//        new SrcReader(bikePath);
-//
-////        URL resultUrl = getClass().getResource("");
-//        String prePath = "/home/lsy/resources/";
-//        String WaterMarkOutPath = prePath + "water.csv";
-//        String LatencyOutPath = prePath + "timelatency.csv";
-//        String DisOrderOutPath = prePath + "disorder.csv";
-//
-//        // init res writer
-//        new LatencyResWriter(LatencyOutPath);
-//        new WatermarkResWriter(WaterMarkOutPath);
-//        new DisOrderResWriter(DisOrderOutPath);
+        this.cbprefix = "/home/lsy/resources/bike/";
+        this.diprefix = "/home/lsy/resources/didi/";
+        this.CBfileMap = new HashMap<String, String>() {
+            {
+                put("CB201809", cbprefix+"CB201809/CB20180901.csv");
+                put("CB201810", cbprefix+"CB201810/CB20181001.csv");
+                put("CB201811", cbprefix+"CB201811/CB20181101.csv");
+                put("CB201812", cbprefix+"CB201812/CB20181201.csv");
+                put("CB201901", cbprefix+"CB201901/CB20190101.csv");
+                put("CB201902", cbprefix+"CB201902/CB20190201.csv");
+            }
+        };
+        this.DifileMap = new HashMap<String, String>() {
+            {
+                put("DIDI201705", diprefix+"DIDI201705/DIDI20170501.csv");
+                put("DIDI201706", diprefix+"DIDI201706/DIDI20170601.csv");
+                put("DIDI201707", diprefix+"DIDI201707/DIDI20170701.csv");
+                put("DIDI201708", diprefix+"DIDI201708/DIDI20170801.csv");
+                put("DIDI201709", diprefix+"DIDI201709/DIDI20170901.csv");
+                put("DIDI201710", diprefix+"DIDI201710/DIDI20171001.csv");
+            }
+        };
     }
 
     // read csv head
@@ -139,17 +151,16 @@ public class AdBikeSource extends BikeRideSource {
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
 //        DiDiStrategy strategy = new DiDiStrategy(threshold, maxDelayThreshold);
-        String bikePath = "/home/lsy/resources/bike/CB201902/CB20190201.csv";
-//        URL bikeDataUrl = getClass().getResource("/bike/CB201902/CB20190201.csv");
-//        String bikeDataPath = bikeDataUrl.getFile();
+        String bikePath = this.CBfileMap.getOrDefault(this.DataSet,"/home/lsy/resources/bike/CB201810/CB20181001.csv");
+
         // init input source data
         new SrcReader(bikePath);
 
 //        URL resultUrl = getClass().getResource("");
-        String prePath = "/home/lsy/resources/";
-        String WaterMarkOutPath = prePath + "water.csv";
-        String LatencyOutPath = prePath + "timelatency.csv";
-        String DisOrderOutPath = prePath + "disorder.csv";
+        String prePath = "/home/lsy/resources/result/";
+        String WaterMarkOutPath = prePath + this.DataSet + "_water.csv";
+        String LatencyOutPath = prePath + this.DataSet + "_timelatency.csv";
+        String DisOrderOutPath = prePath + this.DataSet +"_disorder.csv";
 
         // init res writer
         new LatencyResWriter(LatencyOutPath);
@@ -176,7 +187,7 @@ public class AdBikeSource extends BikeRideSource {
                 WatermarkResWriter.csvWriter.writeNext(tmpRes);
                 sourceContext.emitWatermark(new Watermark(currentWaterMark));
             }
-            Thread.sleep(30);
+            Thread.sleep(10);
         }
         // 保存实验结果
         String[] tmpRes1 = {String.valueOf(this.lateEvent), String.valueOf(this.eventCount)};

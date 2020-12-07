@@ -28,6 +28,7 @@ import adwater.srcreader.SrcReader;
 import adwater.trigger.EventTimeRecordTrigger;
 import org.apache.commons.cli.*;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -41,6 +42,7 @@ import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 
+import java.lang.reflect.Parameter;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -61,16 +63,9 @@ public class StreamingJob {
 
     public static void main(String[] args) throws Exception {
 
-        // set filePath
-//        URL resultUrl = StreamingJob.class.getClassLoader().getResource("");
-//        String WaterMarkOutPath = resultUrl.getFile() + "/water.csv";
-//        String LatencyOutPath = resultUrl.getFile() + "/timelatency.csv";
-//        String DisOrderOutPath = resultUrl.getFile() + "/disorder.csv";
-
-
-//        URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("bike/CB201902/CB20190201.csv");
-//        String bikeDataPath = bikeDataUrl.getFile();
-
+        // get filePath from params
+        final ParameterTool params = ParameterTool.fromArgs(args);
+        String DateSet = params.get("d", "CB201810");
 
         // set up the streaming execution environment
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -92,7 +87,7 @@ public class StreamingJob {
         long windowSize = 60;
 
 //        BikeSource bs =  new BikeSource(isheuristic, lantency);
-        AdBikeSource bs =  new AdBikeSource(0.3, windowSize, 10, 4700);
+        AdBikeSource bs =  new AdBikeSource(DateSet,0.3, windowSize, 10, 4700);
 
         DataStream<BikeRide> bikerides = env.addSource(bs);
 
@@ -113,7 +108,7 @@ public class StreamingJob {
                         }
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
                         String result = sdf.format(timeWindow.getStart()) + "<->" + sdf.format(timeWindow.getEnd()) + " \n" +
-                                "窗口内元素个数: " + count;
+                                "calculate window: " + count;
                         System.out.println(result);
                         collector.collect(result);
                     }
@@ -121,7 +116,7 @@ public class StreamingJob {
 
 
         // exec system
-        env.execute("Flink Streaming Java API Skeleton");
+        env.execute("Flink Streaming Adaptive Watermark");
 
         // store res(wm/la) to disk
         LatencyResWriter.csvWriter.close();

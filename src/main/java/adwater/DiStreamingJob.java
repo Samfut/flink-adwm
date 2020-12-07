@@ -28,6 +28,7 @@ import adwater.srcreader.SrcReader;
 import adwater.trigger.EventTimeRecordTrigger;
 import org.apache.commons.cli.*;
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -67,6 +68,9 @@ public class DiStreamingJob {
         String LatencyOutPath = resultUrl.getFile() + "./timelatency.csv";
         String DisOrderOutPath = resultUrl.getFile() + "./disorder.csv";
 
+        final ParameterTool params = ParameterTool.fromArgs(args);
+        String DateSet = params.get("d", "CB201810");
+
         // 加载数据
         URL bikeDataUrl = StreamingJob.class.getClassLoader().getResource("didi/DIDI201710/DIDI20171001.csv");
         String bikeDataPath = bikeDataUrl.getFile();
@@ -99,7 +103,7 @@ public class DiStreamingJob {
 
         // TODO 切换数据源类型分为周期性水印和启发式水印
 //        BikeSource bs =  new BikeSource(isheuristic, lantency);
-        AdBikeSource bs =  new AdBikeSource(threshold, windowSize, monitorPer, maxDelayThreshold);
+        AdBikeSource bs =  new AdBikeSource(DateSet, threshold, windowSize, monitorPer, maxDelayThreshold);
 
         DataStream<BikeRide> bikerides = env.addSource(bs);
 

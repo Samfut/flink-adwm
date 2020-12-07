@@ -87,7 +87,7 @@ export default {
       modelValue: [],
       dataSetOption: src.SelectData,
       SelectModel: src.SelectModel,
-      baseUrl: "http://slave2:5000",
+      baseUrl: "http://localhost:5000",
       isloading: true
     }
   },
@@ -164,6 +164,7 @@ export default {
           let WaitChart = echarts.init(document.getElementById("wait"));
           op.wait.xAxis[0].data = xtime;
           op.wait.series[0].data = ywait;
+          ycom = ycom === 0? 1000: ycom;
           op.wait.series[1].data = ycom;
           WaitChart.setOption(op.wait);
           i++;
