@@ -43,7 +43,7 @@
                  element-loading-text="等待数据加载中"
                  element-loading-spinner="el-icon-loading"
         >
-          <div id="disorder" style="width: 1000px;height: 300px"></div>
+          <div id="disorder" style="width: 1400px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -54,7 +54,7 @@
                  element-loading-text="等待数据加载中"
                  element-loading-spinner="el-icon-loading"
         >
-          <div id="wait" style="width: 1000px;height: 300px"></div>
+          <div id="wait" style="width: 1400px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -65,7 +65,7 @@
                  element-loading-text="等待数据加载中"
                  element-loading-spinner="el-icon-loading"
         >
-          <div id="window" style="width: 1000px;height: 300px"></div>
+          <div id="window" style="width: 1400px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -104,6 +104,12 @@ export default {
         dataset: this.dataSetValue[0] + this.dataSetValue[1],
         model: this.modelValue
       }
+      axios.get(this.baseUrl+"/api/window/wait", {params:params}).then(res=>{
+        // eslint-disable-next-line no-console
+        src.windowTime = res.data.xtime;
+        src.ywindow = res.data.ywait;
+        src.ywincom = res.data.ycom;
+      })
       axios.get(this.baseUrl+"/api/watermark/predict", {params:params}).then(res=>{
         // eslint-disable-next-line no-console
         this.isloading = false;
@@ -117,12 +123,7 @@ export default {
         src.ywait = res.data.ywait;
         src.ycom = res.data.ycom;
       })
-      axios.get(this.baseUrl+"/api/window/wait", {params:params}).then(res=>{
-        // eslint-disable-next-line no-console
-        src.windowTime = res.data.xtime;
-        src.ywindow = res.data.ywait;
-        src.ywincom = res.data.ycom;
-      })
+
     },
     stopDataSet(){
       window.location.reload(true);
@@ -151,6 +152,7 @@ export default {
 
     updateWait() {
       let i = 0;
+      let gap = 400;
       let xtime = [];
       let ywait = [];
       let ycom = [];
@@ -158,9 +160,9 @@ export default {
           if(i > src.waitTime.length) {
             return;
           }
-          xtime.push(src.waitTime[i]);
-          ywait.push(src.ywait[i]);
-          ycom.push(src.ycom[i]);
+          xtime.push(src.waitTime[i+gap]);
+          ywait.push(src.ywait[i+gap]);
+          ycom.push(src.ycom[i+gap]);
           let WaitChart = echarts.init(document.getElementById("wait"));
           op.wait.xAxis[0].data = xtime;
           op.wait.series[0].data = ywait;
@@ -173,6 +175,7 @@ export default {
 
     updateWindow() {
       let i = 0;
+      let gap = 200;
       let xtime = [];
       let ywait = [];
       let ycom = [];
@@ -180,9 +183,9 @@ export default {
         if(i > src.windowTime.length) {
           return;
         }
-        xtime.push(src.windowTime[i]);
-        ywait.push(src.ywindow[i]);
-        ycom.push(src.ywincom[i]);
+        xtime.push(src.windowTime[i+gap]);
+        ywait.push(src.ywindow[i+gap]);
+        ycom.push(src.ywincom[i+gap]);
         let Chart = echarts.init(document.getElementById("window"));
         op.window.xAxis[0].data = xtime;
         op.window.series[0].data = ywait;
@@ -193,9 +196,9 @@ export default {
       return update;
     },
     initDelay() {
-      setInterval(this.updateDisOrder(), 500);
-      setInterval(this.updateWindow(), 100);
-      setInterval(this.updateWait(), 100);
+      setInterval(this.updateDisOrder(), 1000);
+      setInterval(this.updateWait(), 500);
+      setInterval(this.updateWindow(), 1000);
     },
   }
 }

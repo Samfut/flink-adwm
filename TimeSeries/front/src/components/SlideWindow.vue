@@ -44,7 +44,7 @@
                  element-loading-text="等待数据加载中"
                  element-loading-spinner="el-icon-loading"
         >
-          <div id="cpu" style="width: 1000px;height: 300px"></div>
+          <div id="cpu" style="width: 1400px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -55,7 +55,7 @@
                  element-loading-text="等待数据加载中"
                  element-loading-spinner="el-icon-loading"
         >
-          <div id="mem" style="width: 1000px;height: 300px"></div>
+          <div id="mem" style="width: 1400px;height: 300px"></div>
         </el-card>
       </el-col>
     </el-row>

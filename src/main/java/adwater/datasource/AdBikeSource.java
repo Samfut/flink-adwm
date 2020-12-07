@@ -38,9 +38,7 @@ public class AdBikeSource extends BikeRideSource {
         this.currentWaterMark = 0L;
         this.drop = 0;
         this.threshold = threshold;
-        //TODO
         this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        this.dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSSS");
         this.windowSize = windowSize;
         this.preTimeStamp = 0;
         this.monitorPer = monitorPer;
@@ -77,7 +75,6 @@ public class AdBikeSource extends BikeRideSource {
 
     @Override
     public void run(SourceContext<BikeRide> sourceContext) throws Exception {
-        //TODO
         DiDiStrategy strategy = new DiDiStrategy(threshold, maxDelayThreshold);
 //        NaiveStrategy strategy = new NaiveStrategy(threshold, maxDelayThreshold);
         this.readHead();
@@ -92,7 +89,6 @@ public class AdBikeSource extends BikeRideSource {
             if(l==-1) {
                 continue;
             }
-//            System.out.println(l);
             if (ts - l > currentWaterMark) {
                 currentWaterMark = ts - l;
                 String[] tmpRes = {String.valueOf(currentWaterMark), String.valueOf(ts)};
