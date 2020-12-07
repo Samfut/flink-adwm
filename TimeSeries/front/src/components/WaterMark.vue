@@ -87,7 +87,7 @@ export default {
       modelValue: [],
       dataSetOption: src.SelectData,
       SelectModel: src.SelectModel,
-      baseUrl: "http://slave2:5000",
+      baseUrl: "http://localhost:5000",
       isloading: true
     }
   },
@@ -162,7 +162,11 @@ export default {
           }
           xtime.push(src.waitTime[i+gap]);
           ywait.push(src.ywait[i+gap]);
-          ycom.push(src.ycom[i+gap]);
+          if(src.ycom[i+gap]===0) {
+            ycom.push(1000);
+          } else {
+            ycom.push(src.ycom[i+gap]);
+          }
           let WaitChart = echarts.init(document.getElementById("wait"));
           op.wait.xAxis[0].data = xtime;
           op.wait.series[0].data = ywait;
