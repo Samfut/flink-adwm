@@ -76,7 +76,7 @@ export default {
       func: 'Count',
       selectFunc: src.SelectFunc,
       isloading: true,
-      baseUrl: "http://slave2:5000",
+      baseUrl: "http://knl:5000",
     }
   },
   mounted() {

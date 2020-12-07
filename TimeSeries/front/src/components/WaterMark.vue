@@ -87,7 +87,7 @@ export default {
       modelValue: [],
       dataSetOption: src.SelectData,
       SelectModel: src.SelectModel,
-      baseUrl: "http://localhost:5000",
+      baseUrl: "http://knl:5000",
       isloading: true
     }
   },
@@ -106,6 +106,7 @@ export default {
       }
       axios.get(this.baseUrl+"/api/window/wait", {params:params}).then(res=>{
         // eslint-disable-next-line no-console
+        console.log(res.data.ywait)
         src.windowTime = res.data.xtime;
         src.ywindow = res.data.ywait;
         src.ywincom = res.data.ycom;
@@ -184,7 +185,7 @@ export default {
       let ywait = [];
       let ycom = [];
       function update() {
-        if(i > src.windowTime.length) {
+        if(i > src.ywindow.length) {
           return;
         }
         xtime.push(src.windowTime[i+gap]);
